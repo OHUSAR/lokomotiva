@@ -1,0 +1,37 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LOKO | {% block title_extension %}{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link href="{% static "lokoadmin/css/bootstrap.min.css" %}" rel="stylesheet">
+<link href="{% static "lokoadmin/css/bootstrap-responsive.min.css" %}" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+<link href="{% static "lokoadmin/css/font-awesome.css" %}" rel="stylesheet">
+<link href="{% static "lokoadmin/css/style.css" %}" rel="stylesheet">
+<link href="{% static "lokoadmin/css/pages/dashboard.css"  %}" rel="stylesheet">
+{% block custom_css %}
+{% endblock %}
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+{% block content %}
+{% endblock %}
+
+<script src="{% static "lokoadmin/js/jquery-1.7.2.min.js" %}" type="text/javascript"></script>
+<script src="{% static "lokoadmin/js/excanvas.min.js" %}" type="text/javascript"></script>
+<script src="{% static "lokoadmin/js/chart.min.js" %}" type="text/javascript"></script>
+<script src="{% static "lokoadmin/js/bootstrap.js" %}" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src={% static "lokoadmin/js/full-calendar/fullcalendar.min.js" %}></script>
+<script src={% static "lokoadmin/js/base.js" %}></script>
+
+{% block custom_js %}
+{% endblock %}
+</html>

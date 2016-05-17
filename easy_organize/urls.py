@@ -17,6 +17,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^lokoadmin/', include('events.urls', namespace='lokoadmin')),
+    url(r'^lokoadmin/', include('lokoadmin.urls', namespace='lokoadmin')),
     url(r'^admin/', admin.site.urls),
 ]
