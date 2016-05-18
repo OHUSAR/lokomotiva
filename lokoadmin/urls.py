@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from lokoadmin.views.dashboard import *
+from user_profiles.views import *
 from django.contrib.auth.views import login, logout
 
 
@@ -10,8 +11,13 @@ auth_urls = [
         name='logout')
 ]
 
-dashboard_views = [
-        url(r'^$', dashboard_view, name='dashboard'),
+dashboard_urls = [
+    url(r'^$', dashboard_view, name='dashboard'),
 ]
 
-urlpatterns = auth_urls + dashboard_views
+user_profile_urls = [
+    url(r'^users/$', users, name='users'),
+    url(r'^users/add$', add_user, name='add_user'),
+]
+
+urlpatterns = auth_urls + dashboard_urls + user_profile_urls

@@ -1,0 +1,8 @@
+{% extends 'lokoadmin/admin_base.html' %}
+
+{% block title_extension %}užívatelia{% endblock %}
+{% block users_active %}"active"{% endblock %}
+{% block custom_actions %}
+  <li><a href="{% url "lokoadmin:users" %}">Všetci užívatelia</a></li>
+  <li><a href="{% url "lokoadmin:add_user" %}">Pridaj užívatela</a></li>
+{% endblock %}
