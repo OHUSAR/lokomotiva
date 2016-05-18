@@ -1,9 +1,49 @@
 {% extends 'lokoadmin/events/event_base.html' %}
 
-<div class="widget">
-  <div class="widget-header">
-    Typy udalostí
+{% block body_content %}
+  <div class="widget">
+    <div class="widget-header">
+      <h3>Typy udalostí</h3>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:event_type_add' %}">
+          <i class="icon-plus"></i>
+        </a>
+      </div>
+    </div>
+    <div class="widget-content">
+      <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th> Názov </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for type in object_list %}
+          <tr data-href="{% url 'lokoadmin:event_type_edit' type.pk %}">
+            <td> {{ type.name }} </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="widget-content">
-  </div>
-</div>
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+$(function() {
+    $('.table tr[data-href]').each(function(){
+        $(this).css('cursor','pointer').hover(
+            function(){
+                $(this).addClass('active');
+            },
+            function(){
+                $(this).removeClass('active');
+            }).click( function(){
+                document.location = $(this).attr('data-href');
+            }
+        );
+    });
+});
+</script>
+{% endblock %}

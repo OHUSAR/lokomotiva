@@ -31,6 +31,9 @@ event_urls = [
 
 event_type_urls = [
     url(r'^events/types/$', EventTypeList.as_view(), name='event_types'),
+    url(r'events/types/add/$', EventTypeAdd.as_view(), name='event_type_add'),
+    url(r'events/types/(?P<pk>[0-9]+)/$', EventTypeEdit.as_view(), name='event_type_edit'),
+    url(r'events/types/(?P<pk>[0-9]+)/delete/$', EventTypeDelete.as_view(), name='event_type_delete'),
 ]
 
 urlpatterns = auth_urls + dashboard_urls + user_profile_urls + event_urls + event_type_urls

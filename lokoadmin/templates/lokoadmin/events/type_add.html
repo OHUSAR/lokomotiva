@@ -1,0 +1,24 @@
+{% extends 'lokoadmin/events/event_base.html' %}
+
+{% block body_content %}
+  <div class="widget">
+    <div class="widget-header">
+      <h3>Typy udalostí</h3>
+      {% if object.pk %}
+        <div class="col-2 pull-right" style="margin-right: 2%;">
+          <a href="{% url 'lokoadmin:event_type_delete' object.pk %}">
+            <i class="icon-trash"></i>
+          </a>
+        </div>
+      {% endif %}
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:event_types' %}">
+          <i class="icon-arrow-left"></i>
+        </a>
+      </div>
+    </div>
+    <div class="widget-content">
+      {% include 'lokoadmin/form.html' %}
+    </div>
+  </div>
+{% endblock %}
