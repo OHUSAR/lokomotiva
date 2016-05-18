@@ -1,0 +1,17 @@
+{% extends 'lokoadmin/admin_base.html' %}
+
+{% block title_extension %}eventy{% endblock %}
+{% block events_active %}"active"{% endblock %}
+{% block custom_actions %}
+  <li><a href="{% url 'lokoadmin:event_types' %}">Typy udalostí</a></li>
+  <li><a href="">Budúce udalosti</a></li>
+  <li><a href="">Minulé udalosti</a></li>
+  <li><a href="">Pridať udalosť</a></li>
+{% endblock %}
+
+<div class="row">
+  <div class="span12">
+    {% block body_content %}
+    {% endblock %}
+  </div>
+</div>

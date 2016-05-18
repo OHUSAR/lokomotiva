@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from lokoadmin.views.dashboard import *
 from user_profiles.views import *
+from events.views import *
 from django.contrib.auth.views import login, logout
 
 
@@ -24,4 +25,12 @@ user_profile_urls = [
     url(r'^users/profile/(.+)/$', user_profile, name='user_profile'),
 ]
 
-urlpatterns = auth_urls + dashboard_urls + user_profile_urls
+event_urls = [
+    url(r'^events/$', events, name='events'),
+]
+
+event_type_urls = [
+    url(r'^events/types/$', EventTypeList.as_view(), name='event_types'),
+]
+
+urlpatterns = auth_urls + dashboard_urls + user_profile_urls + event_urls + event_type_urls

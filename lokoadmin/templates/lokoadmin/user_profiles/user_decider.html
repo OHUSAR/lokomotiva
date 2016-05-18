@@ -1,28 +1,24 @@
 {% extends 'lokoadmin/user_profiles/user_base.html' %}
 
 {% block body_content %}
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="widget">
-        <div class="widget-header"> <i class="icon-bookmark"></i>
-          <h3>Typ užívatela</h3>
-        </div>
-        <div class="widget-content">
-          <div class="shortcuts">
-            <a href="{% url 'lokoadmin:add_user' 'trainer' %}" class="shortcut">
-              <i class="shortcut-icon icon-star"></i>
-              <span class="shortcut-label">Tréner</span>
-            </a>
-            <a href="{% url 'lokoadmin:add_user' 'child' %}" class="shortcut">
-              <i class="shortcut-icon icon-group"></i>
-              <span class="shortcut-label">Dieťa</span>
-            </a>
-            <a href="{% url 'lokoadmin:add_user' 'parent' %}" class="shortcut">
-              <i class="shortcut-icon icon-user"></i>
-              <span class="shortcut-label">Rodič</span>
-            </a>
-          </div>
-        </div>
+  <div class="widget">
+    <div class="widget-header"> <i class="icon-bookmark"></i>
+      <h3>Typ užívatela</h3>
+    </div>
+    <div class="widget-content">
+      <div class="shortcuts">
+        <a href="{% url 'lokoadmin:add_user' 'trainer' %}" class="shortcut">
+          <i class="shortcut-icon icon-star"></i>
+          <span class="shortcut-label">Tréner</span>
+        </a>
+        <a href="{% url 'lokoadmin:add_user' 'child' %}" class="shortcut">
+          <i class="shortcut-icon icon-group"></i>
+          <span class="shortcut-label">Dieťa</span>
+        </a>
+        <a href="{% url 'lokoadmin:add_user' 'parent' %}" class="shortcut">
+          <i class="shortcut-icon icon-user"></i>
+          <span class="shortcut-label">Rodič</span>
+        </a>
       </div>
     </div>
   </div>
