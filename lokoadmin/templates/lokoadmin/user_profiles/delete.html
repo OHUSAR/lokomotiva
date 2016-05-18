@@ -1,0 +1,33 @@
+{% extends 'lokoadmin/user_profiles/user_base.html' %}
+
+{% block body_content %}
+  <div class="row">
+    <div class="span12">
+      <div class="widget">
+        <div class="widget-header">
+          <i class="icon-user"></i>
+          <h3>Vymazať {{ user.username }}</h3>
+        </div>
+        <div class="widget-content">
+          <div class="span12">
+            <strong>Ste si istý?</strong>
+            <br>
+          </div>
+          <div class="span1">
+            <form method="post" action="">
+              {% csrf_token %}
+              <div class="control-group">
+                <div class="controls">
+                  <button type="submit" class="btn btn-danger">Áno</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="span1">
+            <a href="{% url 'lokoadmin:user_profile' user.pk %}" class="btn btn-success">Nie</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

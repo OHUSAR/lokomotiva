@@ -17,7 +17,11 @@ dashboard_urls = [
 
 user_profile_urls = [
     url(r'^users/$', users, name='users'),
-    url(r'^users/add$', add_user, name='add_user'),
+    url(r'^users/decide/$', user_decider, name='user_decider'),
+    url(r'^users/add/(.+)/$', add_user, name='add_user'),
+    url(r'^users/edit/(.+)/$', edit_user, name='edit_user'),
+    url(r'^users/delete/(.+)/$', delete_user, name='delete_user'),
+    url(r'^users/profile/(.+)/$', user_profile, name='user_profile'),
 ]
 
 urlpatterns = auth_urls + dashboard_urls + user_profile_urls
