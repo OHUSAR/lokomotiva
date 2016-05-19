@@ -3,20 +3,25 @@ from user_profiles.forms import *
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from user_profiles.forms import UserForm
+from events.api import get_events_for_user
+from django.contrib.auth.decorators import user_passes_test
 
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def users(request):
     all_users = User.objects.all().order_by('username')
     return render(request, 'lokoadmin/user_profiles/users.html', {'users': all_users})
 
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def user_decider(request):
     return render(request, 'lokoadmin/user_profiles/user_decider.html')
 
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def add_user(request, user_type):
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -35,9 +40,12 @@ def add_user(request, user_type):
 
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def user_profile(request, pk):
     user = User.objects.get(pk=pk)
     form = None
+
+    user_events = get_events_for_user(user)
 
     if user.usertype.user_type == 1:
         child = None
@@ -67,11 +75,12 @@ def user_profile(request, pk):
                     parent = form.save(commit=False)
                     parent.user = user; parent.save()
 
-    context = {'user': user, 'form': form}
+    context = {'user': user, 'form': form, 'user_events': user_events}
     return render(request, 'lokoadmin/user_profiles/user_profile.html', context)
 
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def edit_user(request, pk):
     user = User.objects.get(pk=pk)
     if request.method == "POST":
@@ -84,6 +93,8 @@ def edit_user(request, pk):
     return render(request, 'lokoadmin/user_profiles/user_form.html', {'form': form})
 
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def delete_user(request, pk):
     user = User.objects.get(pk=pk)
     if request.method == "POST":

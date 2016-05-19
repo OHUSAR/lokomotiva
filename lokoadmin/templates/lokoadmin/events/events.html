@@ -9,20 +9,16 @@
           <i class="icon-plus"></i>
         </a>
       </div>
-      {% if newer_link != None %}
-        <div class="col-2 pull-right" style="margin-right: 2%;">
-          <a href="{% url 'lokoadmin:events' newer_link %}">
-            <i class="icon-arrow-left"></i>
-          </a>
-        </div>
-      {% endif %}
-      {% if older_link %}
-        <div class="col-2 pull-right" style="margin-right: 2%;">
-          <a href="{% url 'lokoadmin:events' older_link %}">
-            <i class="icon-arrow-right"></i>
-          </a>
-        </div>
-      {% endif %}
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:events' older_link %}">
+          <i class="icon-arrow-right"></i>
+        </a>
+      </div>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:events' newer_link %}">
+          <i class="icon-arrow-left"></i>
+        </a>
+      </div>
     </div>
     <div class="widget-content">
         {% for event in events %}

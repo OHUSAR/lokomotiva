@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+{% include 'frontend/base/head.html' %}
+
+<body class="w3-theme-l5">
+
+  {% include 'frontend/base/topnav.html' %}
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m3">
+      {% block left_content %}
+      {% endblock %}
+      <!-- End Left Column -->
+    </div>
+
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+      {% block middle_content %}
+      {% endblock %}
+    </div>
+
+    <!-- Right Column -->
+    <div class="w3-col m2">
+      {% block right_content %}
+      {% endblock %}
+      <!-- End Right Column -->
+    </div>
+  </div>
+  <!-- End Page Container -->
+</div>
+<br>
+
+{% include 'frontend/base/footer.html' %}
+
+</body>
+</html>

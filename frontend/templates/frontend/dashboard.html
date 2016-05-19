@@ -1,0 +1,104 @@
+{% extends 'frontend/base/base.html' %}
+
+{% block left_content %}
+  <div class="w3-card-2 w3-round w3-white">
+    <div class="w3-container">
+      <h4 class="w3-center">{{ user.username }}</h4>
+      <hr>
+      <p>
+        <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>
+        {{ user.first_name}} {{ user.last_name }}
+      </p>
+      <p><i class="fa fa-star fa-fw w3-margin-right w3-text-theme"></i>
+        {% if user.usertype.user_type == 0 %}
+          Tréner
+        {% elif user.usertype.user_type == 1 %}
+          Dieťa
+        {% else %}
+          Rodič
+        {% endif %}
+      </p>
+    </div>
+  </div>
+  <br>
+
+  <!-- Accordion -->
+  <div class="w3-card-2 w3-round">
+    <div class="w3-accordion w3-white">
+      <button onclick="myFunction('myevents')"
+              class="w3-btn-block w3-theme-l1 w3-left-align">
+        <i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Moje udalosti</button>
+      <div id="myevents" class="w3-accordion-content w3-container">
+        <br>
+        {% for event in user.events.all %}
+          <p>{{ event.event.name }}: {{ event.event.start_date }}</p>
+        {% endfor %}
+      </div>
+      {% if user.usertype.user_type == 2 %}
+        <button onclick="myFunction('mykids')"
+                class="w3-btn-block w3-theme-l1 w3-left-align">
+          <i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Moje deti</button>
+        <div id="mykids" class="w3-accordion-content w3-container">
+          <br>
+          {% for child in user.parentchildren.children.all %}
+            <p>{{ child.user.first_name }} {{ child.user.last_name }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <br>
+{% endblock %}
+
+{% block middle_content %}
+  <div class="w3-row-padding">
+    <div class="w3-col m12">
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container w3-padding">
+          <h1 class="w3-opacity">Udalosti <small>({{ interval }})</small></h1>
+          <div class="col-2 pull-left">
+            <a href="{% url 'frontend:dashboard' older_link %}">
+              <i class="fa fa-arrow-left"></i>
+            </a>
+          </div>
+          <div class="col-2 pull-right">
+            <a href="{% url 'frontend:dashboard' newer_link %}">
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for event in events %}
+    <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
+      <span class="w3-right w3-opacity">{{ event.start_date }} - {{ event.end_date }}</span>
+      <h4>{{ event.name }} - {{ event.location }}</h4><br>
+      <div class="w3-row-padding" style="margin:0 -16px">
+        <div class="w3-half">
+          Začína:
+          {{ event.start_time }}
+        </div>
+        <div class="w3-half">
+          Končí:
+          {{ event.end_time }}
+        </div>
+      </div>
+      <hr class="w3-clear">
+      <p>{{ event.description | safe }}</p>
+      <hr>
+      <a type="button" href="{% url 'frontend:event' event.pk %}"
+         class="w3-btn w3-theme-d1 w3-margin-bottom">
+        Otvor udalosť
+      </a>
+    </div>
+  {% endfor %}
+  <!-- End Middle Column -->
+{% endblock %}
+
+{% block right_content %}
+  <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
+    <p>Nedoplatky</p>
+  </div>
+  <br>
+{% endblock %}

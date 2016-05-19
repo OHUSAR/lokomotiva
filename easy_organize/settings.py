@@ -19,6 +19,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'tinymce',
+    'frontend.apps.FrontendConfig',
     'events.apps.EventsConfig',
     'user_profiles.apps.UserProfilesConfig',
     'lokoadmin.apps.LokoadminConfig',
@@ -119,5 +120,5 @@ DATE_INPUT_FORMATS = [
 STATIC_URL = '/static/'
 
 # Auth
-LOGIN_URL = '/lokoadmin/login/'
-LOGIN_REDIRECT_URL = '/lokoadmin/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'

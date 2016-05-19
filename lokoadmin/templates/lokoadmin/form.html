@@ -2,6 +2,16 @@
 <div class="form-actions">
   <form method="post" action="" class="form-horizontal">
     {% csrf_token %}
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">
+              <i class="fa fa-times-circle"></i>
+            </a>
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
       {% for field in form %}
         <div class="control-group {% if field.errors %}alert alert-danger{% endif %}">
           {{ field.label_tag|add_label_class:'control-label'}}

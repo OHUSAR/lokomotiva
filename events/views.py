@@ -1,77 +1,86 @@
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from events.models import *
 from events.forms import EventTypeForm, EventForm
-from datetime import date, timedelta
+from events.api import get_events, get_month_interval, get_string_interval
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def events(request, wanted=0):
     wanted = int(wanted)
-    month = timedelta(days=30)
-    startdate = date.today() - timedelta(days=30 * wanted)
-    enddate = startdate + month
-    recent_events = Event.objects.filter(start_date__range=[startdate, enddate])
+    start_date, end_date = get_month_interval(wanted)
+    desired_events = get_events(start_date, end_date)
+    recent = get_string_interval(start_date, end_date)
 
-    newer = older = None
-    if wanted > 0:
-        newer = wanted - 1
-
-    if Event.objects.filter(start_date__range=[startdate - month,
-                                               enddate - month]).exists():
-        older = wanted + 1
-
-    recent = "{}. {}. {} - {}. {}. {}".format(startdate.day, startdate.month, startdate.year,
-                                              enddate.day, enddate.month, enddate.year)
     context = {
-        'events': recent_events,
-        'older_link': older,
-        'newer_link': newer,
+        'events': desired_events,
+        'older_link': wanted + 1,
+        'newer_link': wanted - 1,
         'recent': recent
     }
     return render(request, 'lokoadmin/events/events.html', context)
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventDetail(DeleteView):
     model = Event
     template_name = 'lokoadmin/events/event_detail.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventAdd(CreateView):
     model = Event
     form_class = EventForm
     template_name = 'lokoadmin/events/event_form.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventEdit(UpdateView):
     model = Event
     form_class = EventForm
     template_name = 'lokoadmin/events/event_form.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventDelete(DeleteView):
     model = Event
     success_url = reverse_lazy('lokoadmin:events')
     template_name = 'lokoadmin/events/event_delete.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventTypeList(ListView):
     model = EventType
     template_name = 'lokoadmin/events/type_list.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventTypeAdd(CreateView):
     model = EventType
     form_class = EventTypeForm
     template_name = 'lokoadmin/events/type_add.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventTypeEdit(UpdateView):
     model = EventType
     form_class = EventTypeForm
     template_name = 'lokoadmin/events/type_add.html'
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EventTypeDelete(DeleteView):
     model = EventType
     success_url = reverse_lazy('lokoadmin:event_types')

@@ -57,7 +57,23 @@
             {% endif %}
           </div>
           <div class="tab-pane" id="stats">
-
+            <div class="span10">
+              <div class="widget">
+                <div class="widget-header">
+                  <h3>Udalosti, na ktoré je prihlásený</h3>
+                </div>
+                <div class="widget-content">
+                  {% for event in user_events %}
+                    <div class="span4">
+                      {{ event.name }} v <strong>{{ event.location }}</strong>
+                    </div>
+                    <div class="span4">
+                      {{ event.start_date }} - {{ event.start_time }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

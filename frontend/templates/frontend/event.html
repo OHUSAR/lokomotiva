@@ -1,0 +1,94 @@
+{% extends 'frontend/base/base.html' %}
+
+{% block left_content %}
+  <div class="w3-card-2 w3-round w3-white">
+    <div class="w3-container">
+      <h4 class="w3-center">{{ user.username }}</h4>
+      <hr>
+      <p>
+        <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>
+        {{ user.first_name}} {{ user.last_name }}
+      </p>
+      <p><i class="fa fa-star fa-fw w3-margin-right w3-text-theme"></i>
+        {% if user.usertype.user_type == 0 %}
+          Tréner
+        {% elif user.usertype.user_type == 1 %}
+          Dieťa
+        {% else %}
+          Rodič
+        {% endif %}
+      </p>
+    </div>
+  </div>
+  <br>
+{% endblock %}
+
+{% block middle_content %}
+  <div class="w3-row-padding">
+    <div class="w3-col m12">
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container w3-padding">
+          <h1 class="w3-opacity">{{ event.name }} - {{ event.location }}</h1>
+          <span class="w3-right w3-opacity"> {{ cur_cap }} / {{ event.max_capacity }}</span>
+          <br>
+          <small>{{ event.start_date }} - {{ event.end_date }}</small>
+          <div class="w3-half">
+            Začína o {{ event.start_time }}
+          </div>
+          <div class="w3-half">
+            Končí o {{ event.end_time }}
+          </div>
+          <hr class="w3-clear">
+          <p>{{ event.description | safe }}</p>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
+    <div class="w3-container w3-padding">
+      <h4 class="w3-opacity">Prihlásení tréneri</h4>
+      {% for user in trainers %}
+        <p>{{ user.first_name }} {{ user.last_name }}</p>
+      {% endfor %}
+      <hr>
+      <h4 class="w3-opacity">Prihlásené deti</h4>
+      {% for user in children %}
+        <p>{{ user.first_name }} {{ user.last_name }}</p>
+      {% endfor %}
+      <hr>
+      <h4 class="w3-opacity">Prihlásení rodičia</h4>
+      {% for user in parents %}
+        <p>{{ user.first_name }} {{ user.last_name }}</p>
+      {% endfor %}
+      <hr class="w3-clear">
+    </div>
+  </div>
+{% endblock %}
+
+{% block right_content %}
+  <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
+      <form method="post" class="form">
+        {% csrf_token %}
+        <div class="form-group">
+          <select name="pk" id="id_select" class="form-control" style="max-width: 80%;">
+            {% for my_user in my_users %}
+              <option value="{{ my_user.pk }}">{{ my_user }}</option>
+            {% endfor %}
+          </select>
+          <br><br>
+          <button name="change" class="btn badge-primary" type="submit" value="{{ my_user.pk }}"
+                  {% if disabled %}disabled{% endif %}>
+            Zmeň účasť
+          </button>
+        </div>
+      </form>
+      <br>
+      {% if is_full %}
+        <p style="color:red">
+          {{ is_full }}
+        </p>
+      {% endif %}
+  </div>
+{% endblock %}

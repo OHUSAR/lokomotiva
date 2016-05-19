@@ -43,6 +43,11 @@
         'timeFormat': 'H:i'
     });
 
+    $('#id_signup_end_time').timepicker({
+        'showDuration': true,
+        'timeFormat': 'H:i'
+    });
+
     $('#id_start_date').datepicker({
         'format': 'd-m-yyyy',
         'autoclose': true,
@@ -50,6 +55,12 @@
     });
 
     $('#id_end_date').datepicker({
+        'format': 'd-m-yyyy',
+        'autoclose': true,
+        'weekStart': 1
+    });
+
+      $('#id_signup_end_date').datepicker({
         'format': 'd-m-yyyy',
         'autoclose': true,
         'weekStart': 1

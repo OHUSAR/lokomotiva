@@ -2,15 +2,6 @@ from django.conf.urls import url
 from lokoadmin.views.dashboard import *
 from user_profiles.views import *
 from events.views import *
-from django.contrib.auth.views import login, logout
-
-
-auth_urls = [
-    url(r'^login/$', login, {'template_name': 'lokoadmin/login/login.html'},
-        name='login'),
-    url(r'^logout/$', logout, kwargs={'next_page': 'lokoadmin:login'},
-        name='logout')
-]
 
 dashboard_urls = [
     url(r'^$', dashboard_view, name='dashboard'),
@@ -41,4 +32,4 @@ event_type_urls = [
     url(r'events/types/(?P<pk>[0-9]+)/delete/$', EventTypeDelete.as_view(), name='event_type_delete'),
 ]
 
-urlpatterns = auth_urls + dashboard_urls + user_profile_urls + event_urls + event_type_urls
+urlpatterns = dashboard_urls + user_profile_urls + event_urls + event_type_urls

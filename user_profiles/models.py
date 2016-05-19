@@ -24,7 +24,7 @@ class ChildProfile(Model):
 
     def clean(self):
         if self.birthday and self.member_since:
-            if self.birthday < self.member_since:
+            if self.birthday > self.member_since:
                 raise ValidationError("Dieťa nemôže byť členom skôr, ako sa narodí.")
 
 
