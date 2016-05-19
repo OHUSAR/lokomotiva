@@ -4,9 +4,7 @@
 {% block events_active %}"active"{% endblock %}
 {% block custom_actions %}
   <li><a href="{% url 'lokoadmin:event_types' %}">Typy udalostí</a></li>
-  <li><a href="">Budúce udalosti</a></li>
-  <li><a href="">Minulé udalosti</a></li>
-  <li><a href="">Pridať udalosť</a></li>
+  <li><a href="{% url 'lokoadmin:event_add' %}">Pridať udalosť</a></li>
 {% endblock %}
 
 <div class="row">

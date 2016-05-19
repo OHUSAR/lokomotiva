@@ -6,12 +6,28 @@ from events.forms import EventTypeForm, EventForm
 from datetime import date, timedelta
 
 
-def events(request):
-    startdate = date.today()
-    enddate = startdate + timedelta(days=30)
+def events(request, wanted=0):
+    wanted = int(wanted)
+    month = timedelta(days=30)
+    startdate = date.today() - timedelta(days=30 * wanted)
+    enddate = startdate + month
     recent_events = Event.objects.filter(start_date__range=[startdate, enddate])
+
+    newer = older = None
+    if wanted > 0:
+        newer = wanted - 1
+
+    if Event.objects.filter(start_date__range=[startdate - month,
+                                               enddate - month]).exists():
+        older = wanted + 1
+
+    recent = "{}. {}. {} - {}. {}. {}".format(startdate.day, startdate.month, startdate.year,
+                                              enddate.day, enddate.month, enddate.year)
     context = {
-        'events': recent_events
+        'events': recent_events,
+        'older_link': older,
+        'newer_link': newer,
+        'recent': recent
     }
     return render(request, 'lokoadmin/events/events.html', context)
 
