@@ -27,6 +27,10 @@ user_profile_urls = [
 
 event_urls = [
     url(r'^events/$', events, name='events'),
+    url(r'events/(?P<pk>[0-9]+)/$', EventDetail.as_view(), name='event_detail'),
+    url(r'events/add/$', EventAdd.as_view(), name='event_add'),
+    url(r'events/(?P<pk>[0-9]+)/edit/$', EventEdit.as_view(), name='event_edit'),
+    url(r'events/(?P<pk>[0-9]+)/delete/$', EventDelete.as_view(), name='event_delete'),
 ]
 
 event_type_urls = [

@@ -1,0 +1,34 @@
+{% extends 'lokoadmin/events/event_base.html' %}
+
+{% block body_content %}
+  <div class="widget">
+    <div class="widget-header">
+      <h3>Udalosť {{ event.name }}</h3>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:event_delete' event.pk %}">
+          <i class="icon-trash"></i>
+        </a>
+      </div>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:event_edit' event.pk %}">
+          <i class="icon-pencil"></i>
+        </a>
+      </div>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="#">
+          <i class="icon-home"></i>
+        </a>
+      </div>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:events' %}">
+          <i class="icon-arrow-left"></i>
+        </a>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div class="span10">
+        {{ event.name }} {{ event.location }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

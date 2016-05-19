@@ -31,7 +31,7 @@ def add_user(request, user_type):
             return redirect(reverse("lokoadmin:user_profile", args=[user.pk]))
     else:
         form = UserForm()
-    return render(request, 'lokoadmin/user_profiles/add_user.html', {'form': form})
+    return render(request, 'lokoadmin/user_profiles/user_form.html', {'form': form})
 
 
 @login_required
@@ -81,7 +81,7 @@ def edit_user(request, pk):
             return redirect(reverse("lokoadmin:user_profile", args=[pk]))
     else:
         form = UserEditForm(instance=user)
-    return render(request, 'lokoadmin/user_profiles/add_user.html', {'form': form})
+    return render(request, 'lokoadmin/user_profiles/user_form.html', {'form': form})
 
 
 def delete_user(request, pk):

@@ -1,0 +1,59 @@
+{% extends 'lokoadmin/events/event_base.html' %}
+
+{% block body_content %}
+  <div class="widget">
+    <div class="widget-header">
+      <h3>Udalosť</h3>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% if event %}{% url 'lokoadmin:event_detail' event.pk %}
+                 {% else %}{% url 'lokoadmin:events' %}{% endif %}">
+          <i class="icon-arrow-left"></i>
+        </a>
+      </div>
+    </div>
+    <div class="widget-content">
+      {% include 'lokoadmin/form.html' %}
+    </div>
+  </div>
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block custom_css %}
+  <link rel="stylesheet" href="{% static "lokoadmin/css/jquery.datetimepicker.min.css" %}">
+{% endblock %}
+
+{% block custom_js %}
+  {% include 'lokoadmin/datepicker_js.html' %}
+  <script type="text/javascript" src="{% static 'django_tinymce/init_tinymce.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_src.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_popup.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce.js' %}"></script>
+  <script type="text/javascript">
+    $('#id_description').css("width", '75%');
+
+      // initialize input widgets first
+    $('#id_start_time').timepicker({
+        'showDuration': true,
+        'timeFormat': 'H:i'
+    });
+
+    $('#id_end_time').timepicker({
+        'showDuration': true,
+        'timeFormat': 'H:i'
+    });
+
+    $('#id_start_date').datepicker({
+        'format': 'd-m-yyyy',
+        'autoclose': true,
+        'weekStart': 1
+    });
+
+    $('#id_end_date').datepicker({
+        'format': 'd-m-yyyy',
+        'autoclose': true,
+        'weekStart': 1
+    });
+
+  </script>
+{% endblock %}

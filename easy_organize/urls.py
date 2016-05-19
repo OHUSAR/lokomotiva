@@ -19,4 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^lokoadmin/', include('lokoadmin.urls', namespace='lokoadmin')),
     url(r'^admin/', admin.site.urls),
+    url(r'^tinymce/', include('tinymce.urls')),
 ]

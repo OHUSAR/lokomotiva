@@ -1,10 +1,34 @@
 {% extends 'lokoadmin/events/event_base.html' %}
 
-<div class="widget">
-  <div class="widget-header">
-
+{% block body_content %}
+  <div class="widget">
+    <div class="widget-header">
+      <h3>Najbližšie udalosti (30 dní)</h3>
+      <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:event_add' %}">
+          <i class="icon-plus"></i>
+        </a>
+      </div>
+    </div>
+    <div class="widget-content">
+      <ul class="news-items">
+        {% for event in events %}
+          <li>
+            <div class="news-item-date">
+              <span class="news-item-day">{{ event.start_date.day }}</span>
+              <span class="news-item-month">{{ event.start_date | date:"M" }}</span>
+            </div>
+            <div class="news-item-detail">
+              <a href="{% url 'lokoadmin:event_detail' event.pk %}" class="news-item-title">
+                {{ event.name }} - {{ event.location }}
+              </a>
+              <p class="news-item-preview">
+                {{ event.description | safe }}
+              </p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
-  <div class="widget-content">
-
-  </div>
-</div>
+{% endblock %}

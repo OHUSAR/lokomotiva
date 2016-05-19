@@ -18,6 +18,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'tinymce',
     'events.apps.EventsConfig',
     'user_profiles.apps.UserProfilesConfig',
     'lokoadmin.apps.LokoadminConfig',
