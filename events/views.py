@@ -25,11 +25,18 @@ def events(request, wanted=0):
     return render(request, 'lokoadmin/events/events.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def event_users(request, pk):
+    event = Event.objects.get(pk=pk)
+    return render(request, 'lokoadmin/events/detail/event_users.html', {'event': event})
+
+
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class EventDetail(DeleteView):
     model = Event
-    template_name = 'lokoadmin/events/event_detail.html'
+    template_name = 'lokoadmin/events/detail/event_detail.html'
 
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')

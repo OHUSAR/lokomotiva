@@ -1,0 +1,17 @@
+{% extends 'lokoadmin/events/detail/detail_base.html' %}
+
+{% block basics_active %}
+  active
+{% endblock %}
+
+{% block event_detail_content %}
+  <h4>{{ event.name }} ({{ event.type }}) - {{ event.location }}</h4>
+  <br>
+  <div class="well well-small">
+    {{ event.description | safe }}
+  </div>
+  <p>
+    <strong>Od </strong> {{ event.start_date }} o {{ event.start_time }} -
+    <strong>Do </strong> {{ event.end_date }} o {{ event.end_time }}
+  </p>
+{% endblock %}
