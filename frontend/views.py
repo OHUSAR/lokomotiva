@@ -9,7 +9,7 @@ def dashboard(request, wanted=0):
     Page is showing upcoming events for one month (today + 30 days)
 
     :param request: HTML request by the user
-    :param wanted: Users can browse through mohths. 0 is current month, +1 is older, -1 is newer
+    :param wanted: Users can browse through mohths. 0 is current month, +1 is newer, -1 is older
     :return: redered dashboard template with context
     """
     wanted = int(wanted)
@@ -19,8 +19,8 @@ def dashboard(request, wanted=0):
 
     context = {
         'events': desired_events,
-        'older_link': wanted + 1,
-        'newer_link': wanted - 1,
+        'older_link': wanted - 1,
+        'newer_link': wanted + 1,
         'interval': interval
     }
     return render(request, 'frontend/dashboard.html', context)

@@ -38,7 +38,11 @@
             {{ event.end_date }} ({{ event.end_time }})</span>
           <br>
           <hr class="w3-clear">
-          <p>{{ event.description | safe }}</p>
+          <br>
+          <article>
+            {{ event.description | safe }}
+            <button class="btn btn-block more">Čítaj ďalej</button>
+          </article>
           <hr>
           <span class="w3-left w3-opacity">
             Prihlasovanie do -  {{ event.signup_end_date }} ({{ event.signup_end_time }})
@@ -76,7 +80,7 @@
     <div class="w3-col m12">
       <div class="w3-card-2 w3-round w3-white w3-center">
         <div class="w3-container w3-padding">
-          <form method="post" class="form">
+          <form method="post" class="form-horizontal">
             {% csrf_token %}
             <div class="form-group">
               <select name="pk" id="id_select" class="form-control" style="max-width: 80%;">

@@ -10,12 +10,12 @@
         </a>
       </div>
       <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:events' older_link %}">
+        <a href="{% url 'lokoadmin:events' newer_link %}">
           <i class="icon-arrow-right"></i>
         </a>
       </div>
       <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:events' newer_link %}">
+        <a href="{% url 'lokoadmin:events' older_link %}">
           <i class="icon-arrow-left"></i>
         </a>
       </div>
@@ -31,9 +31,10 @@
               <a href="{% url 'lokoadmin:event_detail' event.pk %}" class="news-item-title">
                 {{ event.name }} - {{ event.location }}
               </a>
-              <p class="news-item-preview">
+              <br>
+              <article class="news-item-preview">
                 {{ event.description | safe  }}
-              </p>
+              </article>
             </div>
           </div>
         {% endfor %}

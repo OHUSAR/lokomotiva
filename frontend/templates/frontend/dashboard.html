@@ -82,7 +82,11 @@
                                         {{ event.end_date }} ({{ event.end_time }})</span>
       <br>
       <hr class="w3-clear">
-      <p>{{ event.description | safe }}</p>
+      <br>
+      <article>
+        {{ event.description | safe }}
+        <button class="btn btn-block more">Čítaj ďalej</button>
+      </article>
       <hr>
       <a type="button" href="{% url 'frontend:event' event.pk %}"
          class="w3-btn w3-theme-d1 w3-margin-bottom">

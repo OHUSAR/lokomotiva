@@ -18,8 +18,8 @@ def events(request, wanted=0):
 
     context = {
         'events': desired_events,
-        'older_link': wanted + 1,
-        'newer_link': wanted - 1,
+        'older_link': wanted - 1,
+        'newer_link': wanted + 1,
         'recent': recent
     }
     return render(request, 'lokoadmin/events/events.html', context)
