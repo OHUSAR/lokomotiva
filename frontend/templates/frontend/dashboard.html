@@ -31,7 +31,10 @@
       <div id="myevents" class="w3-accordion-content w3-container">
         <br>
         {% for event in user.events.all %}
-          <p>{{ event.event.name }}: {{ event.event.start_date }}</p>
+          <a href="{% url 'frontend:event' event.event.pk %}">
+            <p>{{ event.event.name }}: {{ event.event.start_date }}</p>
+          </a>
+
         {% endfor %}
       </div>
       {% if user.usertype.user_type == 2 %}
@@ -72,18 +75,12 @@
   </div>
   {% for event in events %}
     <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
-      <span class="w3-right w3-opacity">{{ event.start_date }} - {{ event.end_date }}</span>
-      <h4>{{ event.name }} - {{ event.location }}</h4><br>
-      <div class="w3-row-padding" style="margin:0 -16px">
-        <div class="w3-half">
-          Začína:
-          {{ event.start_time }}
-        </div>
-        <div class="w3-half">
-          Končí:
-          {{ event.end_time }}
-        </div>
-      </div>
+      <span class="w3-left">
+        <h4>{{ event.name }} - {{ event.location }}</h4>
+      </span>
+      <span class="w3-right w3-opacity">{{ event.start_date }} ({{ event.start_time }}) -
+                                        {{ event.end_date }} ({{ event.end_time }})</span>
+      <br>
       <hr class="w3-clear">
       <p>{{ event.description | safe }}</p>
       <hr>
@@ -98,7 +95,7 @@
 
 {% block right_content %}
   <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
-    <p>Nedoplatky</p>
+    <h5>Moje nedoplatky</h5>
   </div>
   <br>
 {% endblock %}

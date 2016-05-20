@@ -1,27 +1,24 @@
-<!-- Navbar -->
-<div class="w3-top">
-  <ul class="w3-navbar w3-theme-d2 w3-left-align w3-large">
-    <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-      <a class="w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-    </li>
-    <li>
-      <a href="{% url 'frontend:dashboard' %}" class="w3-padding-large w3-theme-d4">
-        <i class="fa fa-home w3-margin-right"></i>
-        <img src="http://placehold.it/25x25">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
       </a>
-    </li>
-
-    <li class="w3-hide-small w3-right">
-      <a href="{% url 'logout' %}" class="w3-padding-large w3-hover-white" title="logout">
-      <i class="fa fa-sign-out"></i>
+      <a class="brand" href="{% url 'frontend:dashboard' %}">
+        Lokomotíva
       </a>
-    </li>
-  </ul>
-</div>
-
-<!-- Navbar on small screens -->
-<div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:51px">
-  <ul class="w3-navbar w3-left-align w3-large w3-theme">
-    <li><a class="w3-padding-large" href="{% url 'logout' %}">Odhlásiť sa</a></li>
-  </ul>
+      <div class="nav-collapse">
+        <ul class="nav pull-right">
+          <li>
+            <a href="{% url 'logout' %}">
+              <i class="fa fa-sign-out"></i>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

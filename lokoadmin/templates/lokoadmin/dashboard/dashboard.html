@@ -42,6 +42,12 @@
               <i class="shortcut-icon icon-list-alt"></i>
               <span class="shortcut-label">Verejná stránka</span>
             </a>
+            {% if most_recent_event_pk %}
+              <a href="{% url 'lokoadmin:event_detail' most_recent_event_pk %}" class="shortcut">
+                <i class="shortcut-icon icon-time"></i>
+                <span class="shortcut-label">Najbližšia udalosť</span>
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>

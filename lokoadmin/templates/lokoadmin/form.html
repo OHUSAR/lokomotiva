@@ -1,5 +1,5 @@
 {% load custom_filters %}
-<div class="form-actions">
+<div class="form">
   <form method="post" action="" class="form-horizontal">
     {% csrf_token %}
       {% if form.non_field_errors %}
@@ -30,5 +30,3 @@
     </div>
   </form>
 </div>
-
-

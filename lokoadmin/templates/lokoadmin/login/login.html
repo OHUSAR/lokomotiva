@@ -10,6 +10,18 @@
     <div class="content clearfix">
       <form action="#" method="post">
         {% csrf_token %}
+        {% if user.is_authenticated and 'next' in request.GET %}
+          <div class="alert alert-danger fade in">
+              Ste prihlásený ako <b>{{ user.username }}</b>, ale nemáte dostatočné oprávnenie na prístup k tejto stránke.
+          </div>
+        {% elif form.errors %}
+            <div class="alert alert-danger fade in">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                <i class="fa fa-times-circle"></i>
+              </a>
+              Zlé meno/heslo.
+            </div>
+        {% endif %}
         <h1>Prihlasovanie</h1>
 
         <div class="login-fields">

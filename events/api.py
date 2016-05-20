@@ -9,7 +9,7 @@ def get_events(start_date, end_date):
 
 def get_month_interval(number):
     month = timedelta(days=30)
-    start_date = date.today() - month
+    start_date = date.today()
     if number > 0:
         for i in range(number):
             start_date += month
