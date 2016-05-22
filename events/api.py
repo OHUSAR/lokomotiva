@@ -29,7 +29,20 @@ def get_string_interval(start_date, end_date):
 
 def get_attending_groups(event):
     all_users = [ev.user for ev in AttendingEvent.objects.filter(event=event)]
+    trainers = []; children = []; parents = []
+    for user in all_users:
+        if user.usertype.user_type == 1:
+            children.append(user)
+        elif user.usertype.user_type == 2:
+            parents.append(user)
+        else:
+            trainers.append(user)
 
+    return trainers, children, parents
+
+
+def get_not_attending_groups(event):
+    all_users = [u for u in User.objects.all() if not is_attending(u, event)]
     trainers = []; children = []; parents = []
     for user in all_users:
         if user.usertype.user_type == 1:
@@ -64,3 +77,24 @@ def change_attending(user, event):
         AttendingEvent.objects.get(user=user, event=event).delete()
     else:
         AttendingEvent.objects.create(user=user, event=event)
+
+
+def edit_user_attending(event, user_pks):
+    added = deleted = 0
+    all_user_pks = set(u.pk for u in User.objects.all())
+    attending_pks = set(att.user.pk for att in AttendingEvent.objects.filter(event=event))
+    not_att_pks = all_user_pks - attending_pks
+
+    for add_att_pk in (user_pks & not_att_pks):
+        added += 1
+        user = User.objects.get(pk=add_att_pk)
+        print(user.username)
+        AttendingEvent.objects.create(event=event, user=user)
+
+    for remove_att_pk in (attending_pks - user_pks):
+        deleted += 1
+        user = User.objects.get(pk=remove_att_pk)
+        print(user.username)
+        AttendingEvent.objects.get(event=event, user=user).delete()
+
+    return added, deleted

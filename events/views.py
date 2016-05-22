@@ -3,9 +3,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from events.models import *
 from events.forms import EventTypeForm, EventForm
-from events.api import get_events, get_month_interval, get_string_interval
+from events.api import *
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -29,7 +28,27 @@ def events(request, wanted=0):
 @login_required
 def event_users(request, pk):
     event = Event.objects.get(pk=pk)
-    return render(request, 'lokoadmin/events/detail/event_users.html', {'event': event})
+    msg = ""
+    if request.method == 'POST':
+        pks = set(int(k) for k, v in request.POST.items() if 'csrf' not in k)
+        added, deleted = edit_user_attending(event, pks)
+        msg = "Pridaných: {} - Odobraných: {}".format(added, deleted)
+
+    trainers_att, children_att, parents_att = get_attending_groups(event)
+    trainers_not, children_not, parents_not = get_not_attending_groups(event)
+    capacity = "{} / {}".format(len(children_att) + len(parents_att), event.max_capacity)
+    context = {
+        'event': event,
+        'trainers_att': trainers_att,
+        'trainers_not': trainers_not,
+        'children_att': children_att,
+        'children_not': children_not,
+        'parents_att': parents_att,
+        'parents_not': parents_not,
+        'msg': msg,
+        'capacity': capacity
+    }
+    return render(request, 'lokoadmin/events/detail/event_users.html', context)
 
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')

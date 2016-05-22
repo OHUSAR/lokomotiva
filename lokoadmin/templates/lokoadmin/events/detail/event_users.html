@@ -4,6 +4,100 @@
   active
 {% endblock %}
 
+{% block extra_header %}
+ - aktuálna kapacita {{ capacity }}
+{% endblock %}
+
 {% block event_detail_content %}
-  TODO
+  {% if msg %}
+    <div class="span10" style="margin-bottom: 2%;">
+      <span style="color: darkgreen;">{{ msg }}</span>
+    </div>
+  {% endif %}
+  <div class="span10">
+    <form method="post" action="">
+      {% csrf_token %}
+      <div class="span3">
+        <table class="table">
+          <tbody>
+            {% for trainer in trainers_att %}
+              <tr>
+                <td>
+                  <label for="id_{{ trainer.pk }}">{{ trainer.username }}</label>
+                </td>
+                <td>
+                  <input id="id_{{ trainer.pk }}" name="{{ trainer.id }}" value="{{ trainer.id }}" type="checkbox" checked>
+                </td>
+              </tr>
+            {% endfor %}
+            {% for trainer in trainers_not %}
+              <tr>
+                <td>
+                  <label for="id_{{ trainer.pk }}">{{ trainer.username }}</label>
+                </td>
+                <td>
+                  <input id="id_{{ trainer.pk }}" name="{{ trainer.id }}" value="{{ trainer.id }}" type="checkbox">
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="span3">
+        <table class="table">
+          <tbody>
+            {% for child in children_att %}
+              <tr>
+                <td>
+                  <label for="id_{{ child.pk }}">{{ child.username }}</label>
+                </td>
+                <td>
+                  <input id="id_{{ child.pk }}" name="{{ child.id }}" value="{{ child.id }}" type="checkbox" checked>
+                </td>
+              </tr>
+            {% endfor %}
+            {% for child in children_not %}
+              <tr>
+                <td>
+                  <label for="id_{{ child.pk }}">{{ child.username }}</label>
+                </td>
+                <td>
+                  <input id="id_{{ child.pk }}" name="{{ child.id }}" value="{{ child.id }}" type="checkbox">
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="span3">
+        <table class="table">
+          <tbody>
+            {% for parent in parents_att %}
+              <tr>
+                <td>
+                  <label for="id_{{ parent.pk }}">{{ parent.username }}</label>
+                </td>
+                <td>
+                  <input id="id_{{ parent.pk }}" name="{{ parent.id }}" value="{{ parent.id }}" type="checkbox" checked>
+                </td>
+              </tr>
+            {% endfor %}
+            {% for parent in parents_not %}
+              <tr>
+                <td>
+                  <label for="id_{{ parent.pk }}">{{ parent.username }}</label>
+                </td>
+                <td>
+                  <input id="id_{{ parent.pk }}" name="{{ parent.id }}" value="{{ parent.id }}" type="checkbox">
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="span9">
+        <button class="btn btn-block text-center" type="submit" style="width: 100%;">Ulož</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
