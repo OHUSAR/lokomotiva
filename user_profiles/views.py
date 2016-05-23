@@ -75,7 +75,7 @@ def user_profile(request, pk):
                     parent = form.save(commit=False)
                     parent.user = user; parent.save()
 
-    context = {'user': user, 'form': form, 'user_events': user_events}
+    context = {'current_user': user, 'form': form, 'user_events': user_events}
     return render(request, 'lokoadmin/user_profiles/user_profile.html', context)
 
 
@@ -100,4 +100,4 @@ def delete_user(request, pk):
     if request.method == "POST":
         user.delete()
         return redirect(reverse("lokoadmin:users"))
-    return render(request, 'lokoadmin/user_profiles/delete.html', {'user': user})
+    return render(request, 'lokoadmin/user_profiles/delete.html', {'current_user': user})

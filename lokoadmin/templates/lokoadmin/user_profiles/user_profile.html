@@ -4,14 +4,14 @@
   <div class="widget">
     <div class="widget-header">
       <i class="icon-user"></i>
-      <h3>Profil {{ user.username }}</h3>
+      <h3>Profil {{ current_user.username }}</h3>
       <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:delete_user' user.pk %}">
+        <a href="{% url 'lokoadmin:delete_user' current_user.pk %}">
           <i class="icon-trash"></i>
         </a>
       </div>
       <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:edit_user' user.pk %}">
+        <a href="{% url 'lokoadmin:edit_user' current_user.pk %}">
           <i class="icon-pencil"></i>
         </a>
       </div>
@@ -35,7 +35,7 @@
                   <h3>Meno</h3>
                 </div>
                 <div class="widget-content">
-                  {{ user.first_name }} <strong>{{ user.last_name }}</strong>
+                  {{ current_user.first_name }} <strong>{{ current_user.last_name }}</strong>
                 </div>
               </div>
             </div>
@@ -45,12 +45,12 @@
                   <h3>Email</h3>
                 </div>
                 <div class="widget-content">
-                  <a href="mailto:{{ user.email }}" target="_top">{{ user.email }}</a>
+                  <a href="mailto:{{ current_user.email }}" target="_top">{{ current_user.email }}</a>
                 </div>
               </div>
             </div>
             {% if form %}
-              <div class="span10">
+              <div class="span10" style="margin-bottom: 20%;">
                 <h3>Extra údaje</h3>
                 {% include 'lokoadmin/form.html' %}
               </div>
@@ -65,7 +65,9 @@
                 <div class="widget-content">
                   {% for event in user_events %}
                     <div class="span4">
-                      {{ event.name }} v <strong>{{ event.location }}</strong>
+                      <a href="{% url "lokoadmin:event_detail" event.pk %}">
+                        {{ event.name }} v <strong>{{ event.location }}</strong>
+                      </a>
                     </div>
                     <div class="span4">
                       {{ event.start_date }} - {{ event.start_time }}
@@ -85,22 +87,28 @@
 
 {% block custom_css %}
   <link rel="stylesheet" href="{% static "lokoadmin/css/jquery.datetimepicker.min.css" %}">
+  <link rel="stylesheet" href="{% static "lokoadmin/css/multiple-select.css" %}">
 {% endblock %}
 
 {% block custom_js %}
   {% include 'lokoadmin/datepicker_js.html' %}
+  <script src="{% static 'lokoadmin/js/multiple-select.js' %}"></script>
   <script>
-  $(function() {
+    $('#id_children').multipleSelect({
+            filter: true,
+        });
 
-    $('#id_birthday').datepicker({
-        'format': 'dd-mm-yyyy',
-        'autoclose': true
-    });
+    $(function() {
 
-    $( "#id_member_since" ).datepicker({
-        'format': 'dd-mm-yyyy',
-        'autoclose': true
+      $('#id_birthday').datepicker({
+          'format': 'dd-mm-yyyy',
+          'autoclose': true
+      });
+
+      $( "#id_member_since" ).datepicker({
+          'format': 'dd-mm-yyyy',
+          'autoclose': true
+      });
     });
-  });
   </script>
 {% endblock %}
