@@ -40,8 +40,7 @@ def event_detail(request, pk):
 
     current_attending = len(children) + len(parents)  # Trainers aren't limited by the capacity
     event_is_full = (current_attending >= event.max_capacity)
-    signin_is_on = (timezone.now().date() <= event.signup_end_date or
-                    timezone.now().time() <= event.signup_end_time)
+    signin_is_on = (timezone.now().date() <= event.signup_end_date)
 
     msg = ""; color = "green"
 

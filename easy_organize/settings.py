@@ -69,8 +69,8 @@ WSGI_APPLICATION = 'easy_organize.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'easy_organize',
-        'USER': 'oh',
+        'NAME': 'loko',
+        'USER': 'loko',
         'PASSWORD': 'lokomotiva',
         'HOST': 'localhost',
         'PORT': '',
