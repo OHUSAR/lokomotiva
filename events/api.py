@@ -3,8 +3,10 @@ from user_profiles.models import *
 from datetime import date, timedelta
 
 
-def get_events(start_date, end_date):
-    return Event.objects.filter(start_date__range=[start_date, end_date])
+def get_events(start_date, end_date, type='all'):
+    if type == 'all':
+        return Event.objects.filter(start_date__range=[start_date, end_date])
+    return Event.objects.filter(start_date__range=[start_date, end_date], type__name=type)
 
 
 def get_month_interval(number):
@@ -88,13 +90,37 @@ def edit_user_attending(event, user_pks):
     for add_att_pk in (user_pks & not_att_pks):
         added += 1
         user = User.objects.get(pk=add_att_pk)
-        print(user.username)
         AttendingEvent.objects.create(event=event, user=user)
 
     for remove_att_pk in (attending_pks - user_pks):
         deleted += 1
         user = User.objects.get(pk=remove_att_pk)
-        print(user.username)
         AttendingEvent.objects.get(event=event, user=user).delete()
 
     return added, deleted
+
+
+def clone_event(event, end_date, day_count):
+    day_shift = timedelta(days=day_count)
+    current_shift = day_shift
+    count = 0
+    while event.start_date + current_shift < end_date:
+        count += 1
+        current_shift += day_shift
+
+        new_event = Event(
+            type=event.type,
+            name=event.name,
+            location=event.location,
+            start_date=event.start_date + current_shift,
+            end_date=event.end_date + current_shift,
+            start_time=event.start_time,
+            end_time=event.end_time,
+            description=event.description,
+            max_capacity=event.max_capacity,
+            signup_end_date=event.signup_end_date + current_shift,
+            signup_end_time=event.signup_end_time,
+        )
+        new_event.full_clean(); new_event.save()
+
+    return count

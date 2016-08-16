@@ -49,7 +49,7 @@
             {% for child in children_att %}
               <tr>
                 <td>
-                  <label for="id_{{ child.pk }}">{{ child.username }}</label>
+                  <label for="id_{{ child.pk }}">{{ child.childprofile | default:child.username }}</label>
                 </td>
                 <td>
                   <input id="id_{{ child.pk }}" name="{{ child.id }}" value="{{ child.id }}" type="checkbox" checked>
@@ -59,7 +59,7 @@
             {% for child in children_not %}
               <tr>
                 <td>
-                  <label for="id_{{ child.pk }}">{{ child.username }}</label>
+                  <label for="id_{{ child.pk }}">{{ child.childprofile | default:child.username }}</label>
                 </td>
                 <td>
                   <input id="id_{{ child.pk }}" name="{{ child.id }}" value="{{ child.id }}" type="checkbox">

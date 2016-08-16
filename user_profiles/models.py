@@ -20,7 +20,7 @@ class ChildProfile(Model):
     member_since = DateField(verbose_name="vstup do klubu")
 
     def __str__(self):
-        return "{} {}".format(self.user.first_name, self.user.last_name)
+        return "{} {} ({})".format(self.user.first_name, self.user.last_name, self.birthday.year)
 
     def clean(self):
         if self.birthday and self.member_since:

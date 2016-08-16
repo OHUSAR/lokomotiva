@@ -1,0 +1,59 @@
+{% extends 'lokoadmin/events/detail/detail_base.html' %}
+
+{% block no_tabbed_nav %}
+{% endblock %}
+
+{% block event_detail_content %}
+  {% if msg %}
+    <div class="span10" style="margin-bottom: 2%;">
+      <span style="color: {{ msg_color }};">{{ msg }}</span>
+    </div>
+  {% endif %}
+
+  <form method="post" action="" class="form-horizontal">
+    {% csrf_token %}
+
+    <div class="control-group">
+      <label for="id_end_date">Dátum konca opakovania</label>
+      <div class="controls">
+        <input name="end_date" type="datetime" id="id_end_date" class="span6 form-control" required/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="id_end_date">Opakovať každých (dní)</label>
+      <div class="controls">
+        <input name="day_count" type="number" class="span6 form-control" required/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="controls">
+          <input class="span6 form-control" type="submit" value="Klonuj"/>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block custom_css %}
+  <link rel="stylesheet" href="{% static "lokoadmin/css/jquery.datetimepicker.min.css" %}">
+{% endblock %}
+
+{% block custom_js %}
+  {% include 'lokoadmin/datepicker_js.html' %}
+  <script type="text/javascript" src="{% static 'django_tinymce/init_tinymce.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_src.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_popup.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce.js' %}"></script>
+  <script type="text/javascript">
+
+    $('#id_end_date').datepicker({
+        'format': 'd-m-yyyy',
+        'autoclose': true,
+        'weekStart': 1
+    });
+
+  </script>
+{% endblock %}

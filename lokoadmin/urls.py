@@ -18,9 +18,10 @@ user_profile_urls = [
 
 event_urls = [
     url(r'^events/$', events, name='events'),
-    url(r'^events/older/(.+)/$', events, name='events'),
+    url(r'^events/older/(.+)/(.*)/$', events, name='events'),
     url(r'events/(?P<pk>[0-9]+)/$', EventDetail.as_view(), name='event_detail'),
     url(r'events/(?P<pk>[0-9]+)/users/$', event_users, name='event_users'),
+    url(r'events/(?P<pk>[0-9]+)/clone/$', event_clone, name='event_clone'),
     url(r'events/add/$', EventAdd.as_view(), name='event_add'),
     url(r'events/(?P<pk>[0-9]+)/edit/$', EventEdit.as_view(), name='event_edit'),
     url(r'events/(?P<pk>[0-9]+)/delete/$', EventDelete.as_view(), name='event_delete'),

@@ -1,43 +1,63 @@
 {% extends 'lokoadmin/events/event_base.html' %}
 
 {% block body_content %}
-  <div class="widget">
-    <div class="widget-header">
-      <h3>Udalosti ({{ recent }})</h3>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:event_add' %}">
-          <i class="icon-plus"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:events' newer_link %}">
-          <i class="icon-arrow-right"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:events' older_link %}">
-          <i class="icon-arrow-left"></i>
-        </a>
-      </div>
-    </div>
-    <div class="widget-content">
-        {% for event in events %}
-          <div class="span5">
-            <div class="news-item-date">
-              <span class="news-item-day">{{ event.start_date.day }}</span>
-              <span class="news-item-month">{{ event.start_date | date:"M" }}</span>
+    <div class="widget">
+        <div class="widget-header">
+            <h3>Udalosti ({{ recent }})</h3>
+            <div class="col-2 pull-right" style="margin-right: 2%;">
+                <a href="{% url 'lokoadmin:event_add' %}">
+                    <i class="icon-plus"></i>
+                </a>
             </div>
-            <div class="news-item-detail">
-              <a href="{% url 'lokoadmin:event_detail' event.pk %}" class="news-item-title">
-                {{ event.name }} - {{ event.location }}
-              </a>
-              <br>
-              <article class="news-item-preview">
-                {{ event.description | safe  }}
-              </article>
+            <div class="col-2 pull-right" style="margin-right: 2%;">
+                <a href="{% url 'lokoadmin:events' newer_link type %}">
+                    <i class="icon-arrow-right"></i>
+                </a>
             </div>
-          </div>
-        {% endfor %}
+            <div class="col-2 pull-right" style="margin-right: 2%;">
+                <a href="{% url 'lokoadmin:events' older_link type %}">
+                    <i class="icon-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+        <div class="widget-content">
+            <div class="row">
+                <div class="span12">
+                    <form method="post" action="" class="form-vertical">
+                        {% csrf_token %}
+                        <div class="control-group">
+                            <div class="controls">
+                                <select name="type">
+                                  <option value="all">Všetky</option>
+                                  {% for t in all_types %}
+                                    <option value="{{ t.name }}" {% if type == t.name %}selected{% endif %}>
+                                        {{ t.name }}
+                                    </option>
+                                  {% endfor %}
+                                </select>
+                                <input class="span2 form-control" type="submit" value="Filtruj"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% for event in events %}
+                <div class="span5">
+                    <div class="news-item-date">
+                        <span class="news-item-day">{{ event.start_date.day }}</span>
+                        <span class="news-item-month">{{ event.start_date | date:"M" }}</span>
+                    </div>
+                    <div class="news-item-detail">
+                        <a href="{% url 'lokoadmin:event_detail' event.pk %}" class="news-item-title">
+                            {{ event.name }} - {{ event.location }}
+                        </a>
+                        <br>
+                        <article class="news-item-preview">
+                            {{ event.description | safe  }}
+                        </article>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-  </div>
 {% endblock %}
