@@ -57,6 +57,34 @@ def get_not_attending_groups(event):
     return trainers, children, parents
 
 
+def get_accomodated_groups(accomodation):
+    all_users = [acc.user for acc in Accomodated.objects.filter(accomodation=accomodation)]
+    trainers = []; children = []; parents = []
+    for user in all_users:
+        if user.usertype.user_type == 1:
+            children.append(user)
+        elif user.usertype.user_type == 2:
+            parents.append(user)
+        else:
+            trainers.append(user)
+
+    return trainers, children, parents
+
+
+def get_not_accomodated_groups(accomodation):
+    all_users = [u for u in User.objects.all() if not is_accomodated(u, accomodation)]
+    trainers = []; children = []; parents = []
+    for user in all_users:
+        if user.usertype.user_type == 1:
+            children.append(user)
+        elif user.usertype.user_type == 2:
+            parents.append(user)
+        else:
+            trainers.append(user)
+
+    return trainers, children, parents
+
+
 def get_users(user):
     if user.usertype.user_type != 2:
         return [user]
@@ -74,11 +102,22 @@ def is_attending(user, event):
     return AttendingEvent.objects.filter(user=user, event=event).exists()
 
 
+def is_accomodated(user, accomodation):
+    return Accomodated.objects.filter(user=user, accomodation=accomodation).exists()
+
+
 def change_attending(user, event):
     if AttendingEvent.objects.filter(user=user, event=event).exists():
         AttendingEvent.objects.get(user=user, event=event).delete()
     else:
         AttendingEvent.objects.create(user=user, event=event)
+
+
+def change_accomodated(user, event):
+    if Accomodated.objects.filter(user=user, event=event).exists():
+        Accomodated.objects.get(user=user, event=event).delete()
+    else:
+        Accomodated.objects.create(user=user, event=event)
 
 
 def edit_user_attending(event, user_pks):
@@ -96,6 +135,26 @@ def edit_user_attending(event, user_pks):
         deleted += 1
         user = User.objects.get(pk=remove_att_pk)
         AttendingEvent.objects.get(event=event, user=user).delete()
+
+    return added, deleted
+
+
+def edit_user_accomodated(accomodation, user_pks):
+    added = deleted = 0
+    all_user_pks = set(u.pk for u in User.objects.all())
+    accomodated_pks = set(att.user.pk for att in
+                          Accomodated.objects.filter(accomodation=accomodation))
+    not_acc_pks = all_user_pks - accomodated_pks
+
+    for add_att_pk in (user_pks & not_acc_pks):
+        added += 1
+        user = User.objects.get(pk=add_att_pk)
+        Accomodated.objects.create(accomodation=accomodation, user=user)
+
+    for remove_att_pk in (accomodated_pks - user_pks):
+        deleted += 1
+        user = User.objects.get(pk=remove_att_pk)
+        Accomodated.objects.get(accomodation=accomodation, user=user).delete()
 
     return added, deleted
 

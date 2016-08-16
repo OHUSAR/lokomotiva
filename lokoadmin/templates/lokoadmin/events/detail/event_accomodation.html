@@ -1,0 +1,138 @@
+{% extends 'lokoadmin/events/detail/detail_base.html' %}
+
+{% block action_buttons %}
+    {% if active %}
+        <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:delete_accomodation' event.pk active.pk %}">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+        <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:edit_accomodation' event.pk active.pk %}">
+                <i class="icon-pencil"></i>
+            </a>
+        </div>
+    {% endif %}
+    <div class="col-2 pull-right" style="margin-right: 2%;">
+        <a href="{% url 'lokoadmin:event_detail' event.pk %}">
+            <i class="icon-arrow-left"></i>
+        </a>
+    </div>
+{% endblock %}
+
+{% block tabbed_nav %}
+    <div class="col-md-12" style="margin-bottom: 2%;">
+        <ul class="nav nav-tabs">
+            {% for accomodation in event_accomodations %}
+                <li class="{% if active == accomodation %}active{% endif %}" role="presentation" >
+                    <a class="text-success" href="{% url 'lokoadmin:event_accomodation' event.pk accomodation.pk %}">
+                        {{ accomodation.location }} ({{ accomodation.start_date }} - {{ accomodation.end_date }})
+                    </a>
+                </li>
+            {% endfor %}
+            <li class="{% if active == accomodation.location %}active{% endif %}" role="presentation" >
+                <a class="text-success" href="{% url 'lokoadmin:add_accomodation' event.pk %}">
+                    <i class="icon icon-plus"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block event_detail_content %}
+    {% if msg %}
+        <div class="span10" style="margin-bottom: 2%;">
+            <span style="color: darkgreen;">{{ msg }}</span>
+        </div>
+    {% endif %}
+    <div class="span10">
+        {% if has_form %}
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="span3">
+                    <table class="table">
+                        <tbody>
+                        {% for trainer in trainers_att %}
+                            <tr>
+                                <td>
+                                    <label for="id_{{ trainer.pk }}">{{ trainer.username }}</label>
+                                </td>
+                                <td>
+                                    <input id="id_{{ trainer.pk }}" name="{{ trainer.id }}" value="{{ trainer.id }}" type="checkbox" checked>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for trainer in trainers_not %}
+                            <tr>
+                                <td>
+                                    <label for="id_{{ trainer.pk }}">{{ trainer.username }}</label>
+                                </td>
+                                <td>
+                                    <input id="id_{{ trainer.pk }}" name="{{ trainer.id }}" value="{{ trainer.id }}" type="checkbox">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span3">
+                    <table class="table">
+                        <tbody>
+                        {% for child in children_att %}
+                            <tr>
+                                <td>
+                                    <label for="id_{{ child.pk }}">{{ child.childprofile | default:child.username }}</label>
+                                </td>
+                                <td>
+                                    <input id="id_{{ child.pk }}" name="{{ child.id }}" value="{{ child.id }}" type="checkbox" checked>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for child in children_not %}
+                            <tr>
+                                <td>
+                                    <label for="id_{{ child.pk }}">{{ child.childprofile | default:child.username }}</label>
+                                </td>
+                                <td>
+                                    <input id="id_{{ child.pk }}" name="{{ child.id }}" value="{{ child.id }}" type="checkbox">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span3">
+                    <table class="table">
+                        <tbody>
+                        {% for parent in parents_att %}
+                            <tr>
+                                <td>
+                                    <label for="id_{{ parent.pk }}">{{ parent.username }}</label>
+                                </td>
+                                <td>
+                                    <input id="id_{{ parent.pk }}" name="{{ parent.id }}" value="{{ parent.id }}" type="checkbox" checked>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for parent in parents_not %}
+                            <tr>
+                                <td>
+                                    <label for="id_{{ parent.pk }}">{{ parent.username }}</label>
+                                </td>
+                                <td>
+                                    <input id="id_{{ parent.pk }}" name="{{ parent.id }}" value="{{ parent.id }}" type="checkbox">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span9">
+                    <button class="btn btn-block text-center" type="submit" style="width: 100%;">Ulož</button>
+                </div>
+            </form>
+        {% else %}
+            Kliknutím na plus vytvoríte nové ubytovanie pre tento event.
+        {% endif %}
+    </div>
+{% endblock %}

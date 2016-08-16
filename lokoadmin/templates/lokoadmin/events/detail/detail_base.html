@@ -4,35 +4,37 @@
   <div class="widget">
     <div class="widget-header">
       <h3>Udalosť {{ event.name }} {% block extra_header %}{% endblock %}</h3>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:event_delete' event.pk %}">
-          <i class="icon-trash"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:event_edit' event.pk %}">
-          <i class="icon-pencil"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:event_clone' event.pk %}">
-          <i class="icon-time"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="#">
-          <i class="icon-home"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:events' %}">
-          <i class="icon-arrow-left"></i>
-        </a>
-      </div>
+      {% block action_buttons %}
+          <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:event_delete' event.pk %}">
+              <i class="icon-trash"></i>
+            </a>
+          </div>
+          <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:event_edit' event.pk %}">
+              <i class="icon-pencil"></i>
+            </a>
+          </div>
+          <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:event_clone' event.pk %}">
+              <i class="icon-time"></i>
+            </a>
+          </div>
+          <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:event_accomodation' event.pk %}">
+              <i class="icon-home"></i>
+            </a>
+          </div>
+          <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:events' %}">
+              <i class="icon-arrow-left"></i>
+            </a>
+          </div>
+      {% endblock %}
     </div>
     <div class="widget-content">
       <div class="span10">
-        {% block no_tabbed_nav %}
+        {% block tabbed_nav %}
             <div class="col-md-12" style="margin-bottom: 2%;">
               <ul class="nav nav-tabs">
                 <li class="{% block basics_active %}{% endblock %}" role="presentation" >
@@ -42,7 +44,7 @@
                 </li>
                 <li class="{% block people_active %}{% endblock %}" role="presentation" >
                   <a class="text-success" href="{% url 'lokoadmin:event_users' event.pk %}">
-                    Administrácia užívateľov
+                    Dochádzka užívateľov
                   </a>
                 </li>
               </ul>

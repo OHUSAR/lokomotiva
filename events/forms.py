@@ -92,3 +92,40 @@ class EventForm(ModelForm):
                 'required': REQUIRED,
             },
         }
+
+
+class AccomodationForm(ModelForm):
+    class Meta:
+        model = Accomodation
+        fields = (
+            'location',
+            'start_date',
+            'end_date',
+            'price_per_night',
+            'description',
+        )
+        labels = {
+            'location': _('Miesto / názov'),
+            'start_date': _('Dátum začiatku'),
+            'end_date': _('Dátum konca'),
+            'price_per_night': _("Cena za noc"),
+            'description': _('Popis'),
+        }
+        error_messages = {
+            'location': {
+                'required': REQUIRED,
+                'max_length': MAX_LENGTH
+            },
+            'price_per_night': {
+                'required': REQUIRED,
+            },
+            'start_date': {
+                'required': REQUIRED,
+            },
+            'end_date': {
+                'required': REQUIRED,
+            },
+            'description': {
+                'required': REQUIRED,
+            },
+        }

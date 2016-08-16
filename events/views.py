@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from events.forms import EventTypeForm, EventForm
+from events.forms import EventTypeForm, EventForm, AccomodationForm
 from events.api import *
 
 
@@ -87,6 +87,95 @@ def event_clone(request, pk):
         'event': event,
     }
     return render(request, 'lokoadmin/events/detail/event_clone.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def event_accomodation(request, pk, accomodation_pk=None):
+    event = Event.objects.get(pk=pk)
+    accomodations = Accomodation.objects.filter(event=event)
+    msg = ""
+    if accomodation_pk:
+        accomodation = Accomodation.objects.get(pk=accomodation_pk)
+        if request.method == 'POST':
+            pks = set(int(k) for k, v in request.POST.items() if 'csrf' not in k)
+            added, deleted = edit_user_accomodated(accomodation, pks)
+            msg = "Pridaných: {} - Odobraných: {}".format(added, deleted)
+
+    accomodation = ''
+    trainers_att = []; trainers_not = []; children_att = []; children_not = []
+    parents_att = []; parents_not = []; has_form = True
+    if accomodation_pk:
+        accomodation = Accomodation.objects.get(pk=accomodation_pk)
+        trainers_att, children_att, parents_att = get_accomodated_groups(accomodation)
+        trainers_not, children_not, parents_not = get_not_accomodated_groups(accomodation)
+    else:
+        has_form = False
+
+    context = {
+        'msg': msg,
+        'event': event,
+        'event_accomodations': accomodations,
+        'active': accomodation,
+        'has_form': has_form,
+        'trainers_att': trainers_att,
+        'trainers_not': trainers_not,
+        'children_att': children_att,
+        'children_not': children_not,
+        'parents_att': parents_att,
+        'parents_not': parents_not,
+    }
+    return render(request, 'lokoadmin/events/detail/event_accomodation.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def add_accomodation(request, pk):
+    event = Event.objects.get(pk=pk)
+    accomodations = Accomodation.objects.filter(event=event)
+    if request.POST:
+        form = AccomodationForm(request.POST)
+        if form.is_valid():
+            new_acc = form.save(commit=False)
+            new_acc.event = event
+            new_acc.save()
+    else:
+        form = AccomodationForm()
+    context = {
+        'event': event,
+        'event_accomodations': accomodations,
+        'form': form,
+    }
+    return render(request, 'lokoadmin/events/detail/event_accomodation_add.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def edit_accomodation(request, pk, accomodation_pk):
+    event = Event.objects.get(pk=pk)
+    accomodations = Accomodation.objects.filter(event=event)
+    accomodation = Accomodation.objects.get(pk=accomodation_pk)
+    if request.POST:
+        form = AccomodationForm(request.POST, instance=accomodation)
+        if form.is_valid():
+            new_acc = form.save(commit=False)
+            new_acc.event = event
+            new_acc.save()
+    else:
+        form = AccomodationForm(instance=accomodation)
+
+    context = {
+        'event': event,
+        'accomodation': accomodation,
+        'event_accomodations': accomodations,
+        'form': form,
+    }
+    return render(request, 'lokoadmin/events/detail/event_accomodation_add.html', context)
+
+
+def delete_accomodation(request, pk, accomodation_pk):
+    Accomodation.objects.get(pk=accomodation_pk).delete()
+    return redirect(reverse('lokoadmin:event_accomodation', args=[pk]))
 
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')

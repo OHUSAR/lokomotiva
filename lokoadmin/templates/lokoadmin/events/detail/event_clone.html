@@ -1,6 +1,20 @@
 {% extends 'lokoadmin/events/detail/detail_base.html' %}
 
-{% block no_tabbed_nav %}
+{% block tabbed_nav %}
+    <div class="col-md-12" style="margin-bottom: 2%;">
+      <ul class="nav nav-tabs">
+        <li class="{% block basics_active %}{% endblock %}" role="presentation" >
+          <a class="text-success" href="{% url 'lokoadmin:event_detail' event.pk %}">
+            Základné informácie
+          </a>
+        </li>
+        <li class="{% block people_active %}{% endblock %}" role="presentation" >
+          <a class="text-success" href="{% url 'lokoadmin:event_users' event.pk %}">
+            Dochádzka užívateľov
+          </a>
+        </li>
+      </ul>
+    </div>
 {% endblock %}
 
 {% block event_detail_content %}

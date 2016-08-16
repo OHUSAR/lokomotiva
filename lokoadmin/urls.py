@@ -22,6 +22,26 @@ event_urls = [
     url(r'events/(?P<pk>[0-9]+)/$', EventDetail.as_view(), name='event_detail'),
     url(r'events/(?P<pk>[0-9]+)/users/$', event_users, name='event_users'),
     url(r'events/(?P<pk>[0-9]+)/clone/$', event_clone, name='event_clone'),
+    url(
+        r'events/(?P<pk>[0-9]+)/accomodation/$',
+        event_accomodation, name='event_accomodation'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/accomodation/(?P<accomodation_pk>[0-9]+)/delete/$',
+        delete_accomodation, name='delete_accomodation'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/accomodation/(?P<accomodation_pk>[0-9]+)$',
+        event_accomodation, name='event_accomodation'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/accomodation/(?P<accomodation_pk>[0-9]+)/edit$',
+        edit_accomodation, name='edit_accomodation'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/accomodation/add/$',
+        add_accomodation, name='add_accomodation'
+    ),
     url(r'events/add/$', EventAdd.as_view(), name='event_add'),
     url(r'events/(?P<pk>[0-9]+)/edit/$', EventEdit.as_view(), name='event_edit'),
     url(r'events/(?P<pk>[0-9]+)/delete/$', EventDelete.as_view(), name='event_delete'),

@@ -29,6 +29,9 @@ class Event(Model):
     signup_end_date = DateField()
     signup_end_time = TimeField()
 
+    def __str__(self):
+        return "{} ({} - {})".format(self.name, self.start_date, self.end_date)
+
     def get_absolute_url(self):
         return reverse('lokoadmin:event_detail', args=[self.pk, ])
 
@@ -39,12 +42,36 @@ class Event(Model):
 
 
 class Accomodation(Model):
-    event = OneToOneField(Event, on_delete=CASCADE)
+    event = ForeignKey(Event, on_delete=CASCADE, related_name='accomodations')
     start_date = DateField()
     end_date = DateField()
     location = CharField(max_length=100)
     price_per_night = DecimalField(max_digits=10, decimal_places=2)
     description = HTMLField()
+
+    class Meta:
+        unique_together = ('event', 'location', 'start_date', 'end_date', 'price_per_night')
+
+
+class Payment(Model):
+    event = OneToOneField(Event, on_delete=CASCADE)
+    price = DecimalField(max_digits=10, decimal_places=2)
+
+
+class Paid(Model):
+    user = ForeignKey(User, on_delete=CASCADE, related_name='payments')
+    event = ForeignKey(Event, on_delete=CASCADE, related_name='users_that_paid')
+
+    class Meta:
+        unique_together = ('user', 'event')
+
+
+class Accomodated(Model):
+    user = ForeignKey(User, on_delete=CASCADE, related_name='accomodations')
+    accomodation = ForeignKey(Accomodation, on_delete=CASCADE, related_name='accomodated_users')
+
+    class Meta:
+        unique_together = ('user', 'accomodation')
 
 
 class AttendingEvent(Model):

@@ -1,0 +1,81 @@
+{% extends 'lokoadmin/events/detail/detail_base.html' %}
+
+{% block action_buttons %}
+    {% if accomodation %}
+        <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:delete_accomodation' event.pk accomodation.pk %}">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+        <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:edit_accomodation' event.pk accomodation.pk %}">
+                <i class="icon-pencil"></i>
+            </a>
+        </div>
+        <div class="col-2 pull-right" style="margin-right: 2%;">
+            <a href="{% url 'lokoadmin:event_accomodation' event.pk accomodation.pk %}">
+                <i class="icon-arrow-left"></i>
+            </a>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block tabbed_nav %}
+    <div class="col-md-12" style="margin-bottom: 2%;">
+        <ul class="nav nav-tabs">
+            {% for accomodation in event_accomodations %}
+                <li class="{% if active == accomodation.location %}active{% endif %}" role="presentation" >
+                    <a class="text-success" href="{% url 'lokoadmin:event_accomodation' event.pk accomodation.pk %}">
+                        {{ accomodation.location }} ({{ accomodation.start_date }} - {{ accomodation.end_date }})
+                    </a>
+                </li>
+            {% endfor %}
+                <li class="{% if active == accomodation.location %}active{% endif %}" role="presentation" >
+                    <a class="text-success" href="{% url 'lokoadmin:add_accomodation' event.pk %}">
+                        <i class="icon icon-plus"></i>
+                    </a>
+                </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block event_detail_content %}
+   {% if msg %}
+    <div class="span10" style="margin-bottom: 2%;">
+      <span style="color: darkgreen;">{{ msg }}</span>
+    </div>
+  {% endif %}
+  <div class="span10">
+    {% include 'lokoadmin/form.html' %}
+  </div>
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block custom_css %}
+  <link rel="stylesheet" href="{% static "lokoadmin/css/jquery.datetimepicker.min.css" %}">
+{% endblock %}
+
+{% block custom_js %}
+  {% include 'lokoadmin/datepicker_js.html' %}
+  <script type="text/javascript" src="{% static 'django_tinymce/init_tinymce.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_src.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_popup.js' %}"></script>
+  <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce.js' %}"></script>
+  <script type="text/javascript">
+    $('#id_description').css("width", '70%');
+
+    $('#id_start_date').datepicker({
+        'format': 'd-m-yyyy',
+        'autoclose': true,
+        'weekStart': 1
+    });
+
+    $('#id_end_date').datepicker({
+        'format': 'd-m-yyyy',
+        'autoclose': true,
+        'weekStart': 1
+    });
+  </script>
+{% endblock %}
