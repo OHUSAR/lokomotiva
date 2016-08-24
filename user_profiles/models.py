@@ -15,7 +15,7 @@ class UserType(Model):
 
 
 class ChildProfile(Model):
-    user = OneToOneField(User, on_delete=CASCADE)
+    user = OneToOneField(User, on_delete=CASCADE, related_name='childprofile')
     birthday = DateField(verbose_name="dátum narodenia")
     member_since = DateField(verbose_name="vstup do klubu")
 

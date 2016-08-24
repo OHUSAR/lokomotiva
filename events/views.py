@@ -1,8 +1,11 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+from events.excel_utils import write_to_excel
 from events.forms import EventTypeForm, EventForm, AccomodationForm
 from events.api import *
 
@@ -34,7 +37,16 @@ def events(request, wanted=0, type="all"):
 def event_users(request, pk):
     event = Event.objects.get(pk=pk)
     msg = ""
+
     if request.method == 'POST':
+        if 'excel' in request.POST:
+            response = HttpResponse(content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename={}.xlsx'.format(event.name)
+            trainers_att, children_att, parents_att = get_attending_groups(event)
+            xlsx_data = write_to_excel(event, trainers_att, children_att, parents_att)
+            response.write(xlsx_data)
+            return response
+
         pks = set(int(k) for k, v in request.POST.items() if 'csrf' not in k)
         added, deleted = edit_user_attending(event, pks)
         msg = "Pridaných: {} - Odobraných: {}".format(added, deleted)
