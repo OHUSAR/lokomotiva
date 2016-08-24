@@ -1,0 +1,136 @@
+{% extends 'frontend/base/base.html' %}
+
+{% block left_content %}
+    <div class="w3-row-padding">
+        <div class="w3-col m12">
+            <div class="w3-card-2 w3-round w3-white">
+                <div class="w3-container w3-padding">
+                    <h4 class="w3-center">{{ user.username }}</h4>
+                    <hr>
+                    <p>
+                        <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>
+                        {{ user.first_name}} {{ user.last_name }}
+                    </p>
+                    <p><i class="fa fa-star fa-fw w3-margin-right w3-text-theme"></i>
+                        {% if user.usertype.user_type == 0 %}
+                            Tréner
+                        {% elif user.usertype.user_type == 1 %}
+                            Dieťa
+                        {% else %}
+                            Rodič
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
+{% block middle_content %}
+    <div class="w3-row-padding">
+        <div class="w3-col m12">
+            <div class="w3-card-2 w3-round w3-white">
+                <div class="w3-container w3-padding">
+                    <h1 class="w3-opacity">{{ event.name }} - {{ event.location }}</h1>
+                    <span class="w3-right w3-opacity"> {{ cur_cap }} / {{ event.max_capacity }}</span>
+          <span class="w3-left w3-opacity">{{ event.start_date }} ({{ event.start_time }}) -
+            {{ event.end_date }} ({{ event.end_time }})</span>
+                    <br>
+                    <hr class="w3-clear">
+                    <br>
+                    <article>
+                        {{ event.description | safe }}
+                        <button class="btn btn-block more">Čítaj ďalej</button>
+                    </article>
+                    <hr>
+          <span class="w3-left w3-opacity">
+            Prihlasovanie do -  {{ event.signup_end_date }} ({{ event.signup_end_time }})
+          </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-container w3-card-2 w3-white w3-round w3-margin" id="actions_content">
+        <div class="w3-col m12">
+            <div class="w3-container w3-padding">
+                <ul class="nav nav-tabs">
+                    <li class={% block going_active %}{% endblock %}>
+                        <a href="{% url 'frontend:event' event.pk %}">Účastníci zájazdu</a>
+                    </li>
+                    <li class={% block accomodation_active %}{% endblock %}>
+                        <a href="{% url 'frontend:event_accomodations' event.pk %}">Ubytovanie</a>
+                    </li>
+                    <li class={% block payments_active %}{% endblock %}>
+                        <a href="#">Platby</a>
+                    </li>
+                </ul>
+                {% block actions_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block right_content %}
+    <div class="w3-row-padding">
+        <div class="w3-col m12">
+            <div class="w3-card-2 w3-round w3-white w3-center">
+                <div class="w3-container w3-padding">
+                    <form method="post" class="form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <select name="pk" id="id_select" class="form-control" style="max-width: 80%;">
+                                {% for my_user in my_users %}
+                                    <option value="{{ my_user.pk }}">{{ my_user }}</option>
+                                {% endfor %}
+                            </select>
+                            <br><br>
+                            <button name="sign_in" class="btn badge-success" type="submit" value="{{ my_user.pk }}">
+                                Prihlás
+                            </button>
+                            <button name="sign_out" class="btn badge-error" type="submit" value="{{ my_user.pk }}">
+                                Odhlás
+                            </button>
+                        </div>
+                    </form>
+                    <br>
+                    {% if msg %}
+                        <p style="color:{{ color }}">
+                            {{ msg | safe }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
+        <div class="w3-container w3-padding">
+            <div class="table">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Aktuálne</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for my_user in my_users_stats %}
+                        <tr>
+                            <td>{{ my_user.0 }}</td>
+                            <td>
+                                {% if my_user.1%}
+                                    <i style="color: darkgreen;" class="fa fa-check-circle" aria-hidden="true"></i>
+                                {% else %}
+                                    <i style="color: firebrick;" class="fa fa-times-circle" aria-hidden="true"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

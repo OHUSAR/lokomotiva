@@ -159,6 +159,25 @@ def edit_user_accomodated(accomodation, user_pks):
     return added, deleted
 
 
+def edit_group_accomodated(accomodation, user_pks, all_user_pks):
+    added = deleted = 0
+    accomodated_pks = set(att.user.pk for att in
+                          Accomodated.objects.filter(accomodation=accomodation))
+    not_acc_pks = all_user_pks - accomodated_pks
+
+    for add_att_pk in (user_pks & not_acc_pks):
+        added += 1
+        user = User.objects.get(pk=add_att_pk)
+        Accomodated.objects.create(accomodation=accomodation, user=user)
+
+    for remove_att_pk in (accomodated_pks - user_pks):
+        deleted += 1
+        user = User.objects.get(pk=remove_att_pk)
+        Accomodated.objects.get(accomodation=accomodation, user=user).delete()
+
+    return added, deleted
+
+
 def clone_event(event, end_date, day_count):
     day_shift = timedelta(days=day_count)
     current_shift = day_shift

@@ -1,104 +1,121 @@
 {% extends 'frontend/base/base.html' %}
 
 {% block left_content %}
-  <div class="w3-card-2 w3-round w3-white">
-    <div class="w3-container">
-      <h4 class="w3-center">{{ user.username }}</h4>
-      <hr>
-      <p>
-        <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>
-        {{ user.first_name}} {{ user.last_name }}
-      </p>
-      <p><i class="fa fa-star fa-fw w3-margin-right w3-text-theme"></i>
-        {% if user.usertype.user_type == 0 %}
-          Tréner
-        {% elif user.usertype.user_type == 1 %}
-          Dieťa
-        {% else %}
-          Rodič
-        {% endif %}
-      </p>
-    </div>
-  </div>
-  <br>
-
-  <!-- Accordion -->
-  <div class="w3-card-2 w3-round">
-    <div class="w3-accordion w3-white">
-      <button onclick="myFunction('myevents')"
-              class="w3-btn-block w3-theme-l1 w3-left-align">
-        <i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Moje udalosti</button>
-      <div id="myevents" class="w3-accordion-content w3-container" style="padding: 1.5px;">
-        {% for event in user.events.all %}
-          <a href="{% url 'frontend:event' event.event.pk %}">
-            <p>{{ event.event.name }}: {{ event.event.start_date }}</p>
-          </a>
-
-        {% endfor %}
-      </div>
-      {% if user.usertype.user_type == 2 %}
-        <button onclick="myFunction('mykids')"
-                class="w3-btn-block w3-theme-l1 w3-left-align">
-          <i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Moje deti</button>
-        <div id="mykids" class="w3-accordion-content w3-container">
-          <br>
-          {% for child in user.parentchildren.children.all %}
-            <p>{{ child.user.first_name }} {{ child.user.last_name }}</p>
-          {% endfor %}
+    <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+            <h4 class="w3-center">{{ user.username }}</h4>
+            <hr>
+            <p>
+                <i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>
+                {{ user.first_name}} {{ user.last_name }}
+            </p>
+            <p><i class="fa fa-star fa-fw w3-margin-right w3-text-theme"></i>
+                {% if user.usertype.user_type == 0 %}
+                    Tréner
+                {% elif user.usertype.user_type == 1 %}
+                    Dieťa
+                {% else %}
+                    Rodič
+                {% endif %}
+            </p>
         </div>
-      {% endif %}
     </div>
-  </div>
-  <br>
+    <br>
+
+    <!-- Accordion -->
+    <div class="w3-card-2 w3-round">
+        <div class="w3-accordion w3-white">
+            <button onclick="myFunction('myevents')"
+                    class="w3-btn-block w3-theme-l1 w3-left-align">
+                <i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Moje udalosti</button>
+            <div id="myevents" class="w3-accordion-content w3-container" style="padding: 1.5px;">
+                {% for event in user.events.all %}
+                    <a href="{% url 'frontend:event' event.event.pk %}">
+                        <p>{{ event.event.name }}: {{ event.event.start_date }}</p>
+                    </a>
+
+                {% endfor %}
+            </div>
+            {% if user.usertype.user_type == 2 %}
+                <button onclick="myFunction('mykids')"
+                        class="w3-btn-block w3-theme-l1 w3-left-align">
+                    <i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Moje deti</button>
+                <div id="mykids" class="w3-accordion-content w3-container">
+                    <br>
+                    {% for child in user.parentchildren.children.all %}
+                        <p>{{ child.user.first_name }} {{ child.user.last_name }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br>
 {% endblock %}
 
 {% block middle_content %}
-  <div class="w3-row-padding">
-    <div class="w3-col m12">
-      <div class="w3-card-2 w3-round w3-white">
-        <div class="w3-container w3-padding">
-          <h1 class="w3-opacity">Udalosti <small>({{ interval }})</small></h1>
-          <div class="col-2 pull-left">
-            <a href="{% url 'frontend:dashboard' older_link %}">
-              <i class="fa fa-arrow-left"></i>
-            </a>
-          </div>
-          <div class="col-2 pull-right">
-            <a href="{% url 'frontend:dashboard' newer_link %}">
-              <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
+    <div class="w3-row-padding">
+        <div class="w3-col m12">
+            <div class="w3-card-2 w3-round w3-white">
+                <div class="w3-container w3-padding">
+                    <h1 class="w3-opacity">Udalosti <small>({{ interval }})</small></h1>
+                    <div class="col-2 pull-left">
+                        <a href="{% url 'frontend:dashboard' older_link %}">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </div>
+                    <div class="col-2 pull-right">
+                        <a href="{% url 'frontend:dashboard' newer_link %}">
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="w3-container w3-padding">
+                    <form method="post" action="" class="w3-form">
+                        {% csrf_token %}
+                        <div class="w3-select">
+                            <select name="type">
+                                <option value="all">Všetky</option>
+                                {% for t in all_types %}
+                                    <option value="{{ t.name }}" {% if type == t.name %}selected{% endif %}>
+                                        {{ t.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input class="span2" type="submit" value="Filtruj"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  {% for event in events %}
-    <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
+
+    {% for event in events %}
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
       <span class="w3-left">
         <h4>{{ event.name }} - {{ event.location }}</h4>
       </span>
       <span class="w3-right w3-opacity">{{ event.start_date }} ({{ event.start_time }}) -
                                         {{ event.end_date }} ({{ event.end_time }})</span>
-      <br>
-      <hr class="w3-clear">
-      <br>
-      <article>
-        {{ event.description | safe }}
-        <button class="btn btn-block more">Čítaj ďalej</button>
-      </article>
-      <hr>
-      <a type="button" href="{% url 'frontend:event' event.pk %}"
-         class="w3-btn w3-theme-d1 w3-margin-bottom">
-        Otvor udalosť
-      </a>
-    </div>
-  {% endfor %}
-  <!-- End Middle Column -->
+            <br>
+            <hr class="w3-clear">
+            <br>
+            <article>
+                {{ event.description | safe }}
+                <button class="btn btn-block more">Čítaj ďalej</button>
+            </article>
+            <hr>
+            <a type="button" href="{% url 'frontend:event' event.pk %}"
+               class="w3-btn w3-theme-d1 w3-margin-bottom">
+                Otvor udalosť
+            </a>
+        </div>
+    {% endfor %}
+    <!-- End Middle Column -->
 {% endblock %}
 
 {% block right_content %}
-  <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
-    <h5>Moje nedoplatky</h5>
-  </div>
-  <br>
+    <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
+        <h5>Moje nedoplatky</h5>
+    </div>
+    <br>
 {% endblock %}

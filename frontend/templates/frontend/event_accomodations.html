@@ -1,0 +1,31 @@
+{% extends 'frontend/event_base.html' %}
+
+{% load check %}
+{% block accomodation_active %}active{% endblock %}
+{% block actions_content %}
+    {% if not accomodations.all %} Pre túto udalosť nie sú dostupné žiadne ubytovania. {% endif %}
+    {% for accomodation in accomodations.all %}
+        <h4 class="w3-opacity">
+            {{ accomodation.location }}: {{ accomodation.start_date }} až {{ accomodation.end_date }}
+        </h4>
+        <h5 class="w3-opacity">
+            Cena za noc: {{ accomodation.price_per_night }} EUR
+        </h5>
+        <div class="well well-small">
+            {{ accomodation.description | safe }}
+        </div>
+        <form method="post" class="form" action="#actions_content">
+            {% csrf_token %}
+            <select name="users" multiple class="form-control">
+                {% for user in my_users %}
+                    <option {{ accomodation|check:user }}
+                            name="{{ user.pk }}" value="{{ user.pk }}" id="{{ user.pk }}">
+                        {{ user.username }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-primary" name="{{ accomodation.pk }}" type="submit">Zmeň pre {{ accomodation.location }}</button>
+        </form>
+        <hr>
+    {% endfor %}
+{% endblock %}
