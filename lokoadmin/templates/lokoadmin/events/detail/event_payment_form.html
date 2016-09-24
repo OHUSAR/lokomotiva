@@ -58,6 +58,7 @@
 {% endblock %}
 
 {% block custom_js %}
+    <script type="text/javascript" src="{% static 'lokoadmin/js/moment.js' %}"></script>
     <script type="text/javascript" src="{% static 'lokoadmin/js/pikaday.js' %}"></script>
     <script type="text/javascript">
         var timepicker1 = new Pikaday({
