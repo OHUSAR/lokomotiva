@@ -6,7 +6,7 @@ function myFunction(id) {
     } else {
         x.className = x.className.replace("w3-show", "");
         x.previousElementSibling.className =
-        x.previousElementSibling.className.replace(" w3-theme-d1", "");
+            x.previousElementSibling.className.replace(" w3-theme-d1", "");
     }
 }
 
@@ -19,19 +19,21 @@ function openNav() {
     }
 }
 
-$(function () {
-	$('.subnavbar').find ('li').each (function (i) {
-		var mod = i % 3;
-		if (mod === 2) {
-			$(this).addClass ('subnavbar-open-right');
-		}
-	});
+jQuery(document).ready(function ($) {
+    $('.subnavbar').find('li').each(function (i) {
+        var mod = i % 3;
+        if (mod === 2) {
+            $(this).addClass('subnavbar-open-right');
+        }
+    });
+
+
+    $('article').each(function () {
+        $(this).find('p:not(:first)').hide()
+    });
+
+    $('.more').on('click', function () {
+        $(this).hide().closest('article').find('p').show();
+    });
+
 });
-
-$('article').each(function(){ $(this).find('p:not(:first)').hide()});
-
-$('.more').on('click', function(){
-    $(this).hide().closest('article').find('p').show();
-});
-
-
