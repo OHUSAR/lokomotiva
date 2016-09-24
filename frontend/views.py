@@ -21,7 +21,7 @@ def dashboard(request, wanted=0, type='all'):
         'interval': interval,
         'type': type,
         'all_types': EventType.objects.all(),
-}
+    }
     return render(request, 'frontend/dashboard.html', context)
 
 
@@ -54,7 +54,9 @@ def event_detail(request, pk):
                         msg = "Užívatel <b>{}</b> bol úspešne prihlásený.".format(user.username)
             elif 'sign_out' in request.POST:
                 if not user_attending:
-                    msg = "Užívatel <b>{}</b> nie je na udalosť prihlásený.".format(user.username)
+                    msg = "Užívatel <b>{}</b> nie je na udalosť prihlásený.".format(
+                        user.username
+                    )
                     color = "red"
                 else:
                     change_attending(user, event)
@@ -103,7 +105,9 @@ def event_accomodations(request, pk):
                 user_is_trainer = (user.usertype.user_type == 0)
                 if 'sign_in' in request.POST:
                     if user_attending:
-                        msg = "Užívatel <b>{}</b> už je na udalosť prihlásený.".format(user.username)
+                        msg = "Užívatel <b>{}</b> už je na udalosť prihlásený.".format(
+                            user.username
+                        )
                         color = "red"
                     else:
                         if not user_is_trainer and event_is_full:
@@ -111,10 +115,14 @@ def event_accomodations(request, pk):
                             color = "red"
                         else:
                             change_attending(user, event)
-                            msg = "Užívatel <b>{}</b> bol úspešne prihlásený.".format(user.username)
+                            msg = "Užívatel <b>{}</b> bol úspešne prihlásený.".format(
+                                user.username
+                            )
                 elif 'sign_out' in request.POST:
                     if not user_attending:
-                        msg = "Užívatel <b>{}</b> nie je na udalosť prihlásený.".format(user.username)
+                        msg = "Užívatel <b>{}</b> nie je na udalosť prihlásený.".format(
+                            user.username
+                        )
                         color = "red"
                     else:
                         change_attending(user, event)

@@ -85,6 +85,38 @@ def get_not_accomodated_groups(accomodation):
     return trainers, children, parents
 
 
+def has_paid(user, payment):
+    return Paid.objects.filter(payment=payment, user=user).exists()
+
+
+def get_paid_groups(payment):
+    all_users = [acc.user for acc in Paid.objects.filter(payment=payment)]
+    trainers = []; children = []; parents = []
+    for user in all_users:
+        if user.usertype.user_type == 1:
+            children.append(user)
+        elif user.usertype.user_type == 2:
+            parents.append(user)
+        else:
+            trainers.append(user)
+
+    return trainers, children, parents
+
+
+def get_not_paid_groups(payment):
+    all_users = [u for u in User.objects.all() if not has_paid(u, payment)]
+    trainers = []; children = []; parents = []
+    for user in all_users:
+        if user.usertype.user_type == 1:
+            children.append(user)
+        elif user.usertype.user_type == 2:
+            parents.append(user)
+        else:
+            trainers.append(user)
+
+    return trainers, children, parents
+
+
 def get_users(user):
     if user.usertype.user_type != 2:
         return [user]
@@ -135,6 +167,25 @@ def edit_user_attending(event, user_pks):
         deleted += 1
         user = User.objects.get(pk=remove_att_pk)
         AttendingEvent.objects.get(event=event, user=user).delete()
+
+    return added, deleted
+
+
+def edit_user_paid(payment, user_pks):
+    added = deleted = 0
+    all_user_pks = set(u.pk for u in User.objects.all())
+    users_paid = set(att.user.pk for att in Paid.objects.filter(payment=payment))
+    not_acc_pks = all_user_pks - users_paid
+
+    for add_att_pk in (user_pks & not_acc_pks):
+        added += 1
+        user = User.objects.get(pk=add_att_pk)
+        Paid.objects.create(payment=payment, user=user)
+
+    for remove_att_pk in (users_paid - user_pks):
+        deleted += 1
+        user = User.objects.get(pk=remove_att_pk)
+        Paid.objects.get(payment=payment, user=user).delete()
 
     return added, deleted
 

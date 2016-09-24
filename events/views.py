@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from events.excel_utils import write_to_excel
-from events.forms import EventTypeForm, EventForm, AccomodationForm
+from events.forms import EventTypeForm, EventForm, AccomodationForm, PaymentForm
 from events.api import *
 
 
@@ -179,15 +179,109 @@ def edit_accomodation(request, pk, accomodation_pk):
     context = {
         'event': event,
         'accomodation': accomodation,
+        'active': accomodation.location,
         'event_accomodations': accomodations,
         'form': form,
     }
     return render(request, 'lokoadmin/events/detail/event_accomodation_add.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def delete_accomodation(request, pk, accomodation_pk):
     Accomodation.objects.get(pk=accomodation_pk).delete()
     return redirect(reverse('lokoadmin:event_accomodation', args=[pk]))
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def event_payment(request, pk, payment_pk=None):
+    event = Event.objects.get(pk=pk)
+    all_payments = Payment.objects.filter(event=event)
+    msg = ""
+    if payment_pk:
+        payment = Payment.objects.get(pk=payment_pk)
+        if request.method == 'POST':
+            pks = set(int(k) for k, v in request.POST.items() if 'csrf' not in k)
+            added, deleted = edit_user_paid(payment, pks)
+            msg = "Pridaných: {} - Odobraných: {}".format(added, deleted)
+
+    payment = ''
+    trainers_att = []; trainers_not = []; children_att = []; children_not = []
+    parents_att = []; parents_not = []; has_form = True
+    if payment_pk:
+        payment = Payment.objects.get(pk=payment_pk)
+        trainers_att, children_att, parents_att = get_paid_groups(payment)
+        trainers_not, children_not, parents_not = get_not_paid_groups(payment)
+    else:
+        has_form = False
+
+    context = {
+        'msg': msg,
+        'event': event,
+        'event_payments': all_payments,
+        'active': payment,
+        'has_form': has_form,
+        'trainers_att': trainers_att,
+        'trainers_not': trainers_not,
+        'children_att': children_att,
+        'children_not': children_not,
+        'parents_att': parents_att,
+        'parents_not': parents_not,
+    }
+    return render(request, 'lokoadmin/events/detail/event_payment.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def add_payment(request, pk):
+    event = Event.objects.get(pk=pk)
+    all_payments = Payment.objects.filter(event=event)
+    if request.POST:
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            new_acc = form.save(commit=False)
+            new_acc.event = event
+            new_acc.save()
+    else:
+        form = PaymentForm()
+
+    context = {
+        'event': event,
+        'event_payments': all_payments,
+        'form': form,
+    }
+    return render(request, 'lokoadmin/events/detail/event_payment_form.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def edit_payment(request, pk, payment_pk):
+    event = Event.objects.get(pk=pk)
+    all_payments = Payment.objects.filter(event=event)
+    payment = Payment.objects.get(pk=payment_pk)
+    if request.POST:
+        form = PaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            new_acc = form.save(commit=False)
+            new_acc.event = event
+            new_acc.save()
+    else:
+        form = PaymentForm(instance=payment)
+
+    context = {
+        'event': event,
+        'payment': payment,
+        'active': payment,
+        'event_payments': all_payments,
+        'form': form,
+    }
+    return render(request, 'lokoadmin/events/detail/event_payment_form.html', context)
+
+
+def delete_payment(request, pk, payment_pk):
+    Payment.objects.get(pk=payment_pk).delete()
+    return redirect(reverse('lokoadmin:event_payment', args=[pk]))
 
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')

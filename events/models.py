@@ -54,16 +54,18 @@ class Accomodation(Model):
 
 
 class Payment(Model):
-    event = OneToOneField(Event, on_delete=CASCADE)
+    event = ForeignKey(Event, on_delete=CASCADE, null=True, blank=True)
+    name = CharField(max_length=100)
     price = DecimalField(max_digits=10, decimal_places=2)
+    due_date = DateField()
 
 
 class Paid(Model):
     user = ForeignKey(User, on_delete=CASCADE, related_name='payments')
-    event = ForeignKey(Event, on_delete=CASCADE, related_name='users_that_paid')
+    payment = ForeignKey(Payment, on_delete=CASCADE, related_name='users_that_paid')
 
     class Meta:
-        unique_together = ('user', 'event')
+        unique_together = ('user', 'payment')
 
 
 class Accomodated(Model):

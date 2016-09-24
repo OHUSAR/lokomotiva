@@ -1,4 +1,3 @@
-from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
 from events.models import *
 from django.forms.models import *
@@ -126,6 +125,33 @@ class AccomodationForm(ModelForm):
                 'required': REQUIRED,
             },
             'description': {
+                'required': REQUIRED,
+            },
+        }
+
+
+class PaymentForm(ModelForm):
+    class Meta:
+        model = Payment
+        fields = (
+            'name',
+            'price',
+            'due_date',
+        )
+        labels = {
+            'name': _('Popis'),
+            'due_date': _('Dátum začiatku'),
+            'price': _("Cena"),
+        }
+        error_messages = {
+            'name': {
+                'required': REQUIRED,
+                'max_length': MAX_LENGTH
+            },
+            'due_date': {
+                'required': REQUIRED,
+            },
+            'price': {
                 'required': REQUIRED,
             },
         }

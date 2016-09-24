@@ -27,6 +27,26 @@ event_urls = [
         event_accomodation, name='event_accomodation'
     ),
     url(
+        r'events/(?P<pk>[0-9]+)/payments/$',
+        event_payment, name='event_payment'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/payments/(?P<payment_pk>[0-9]+)/delete/$',
+        delete_payment, name='delete_payment'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/payments/(?P<payment_pk>[0-9]+)$',
+        event_payment, name='event_payment'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/payments/(?P<payment_pk>[0-9]+)/edit$',
+        edit_payment, name='edit_payment'
+    ),
+    url(
+        r'events/(?P<pk>[0-9]+)/payments/add/$',
+        add_payment, name='add_payment'
+    ),
+    url(
         r'events/(?P<pk>[0-9]+)/accomodation/(?P<accomodation_pk>[0-9]+)/delete/$',
         delete_accomodation, name='delete_accomodation'
     ),
