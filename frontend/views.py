@@ -1,8 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from events.api import *
 from django.utils import timezone
 
 
+@login_required
 def dashboard(request, wanted=0, type='all'):
     if request.POST:
         type = request.POST.get('type', 'all')
@@ -23,6 +25,7 @@ def dashboard(request, wanted=0, type='all'):
     return render(request, 'frontend/dashboard.html', context)
 
 
+@login_required
 def event_detail(request, pk):
     event = Event.objects.get(pk=pk)
     trainers, children, parents = get_attending_groups(event)
@@ -80,6 +83,7 @@ def event_detail(request, pk):
     return render(request, 'frontend/event.html', context)
 
 
+@login_required
 def event_accomodations(request, pk):
     event = Event.objects.get(pk=pk)
     accomodations = event.accomodations
