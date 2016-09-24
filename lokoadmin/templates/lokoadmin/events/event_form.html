@@ -30,37 +30,37 @@
   <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_popup.js' %}"></script>
   <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce.js' %}"></script>
   <script type="text/javascript">
-    $('#id_description').css("width", '75%');
+    jQuery('#id_description').css("width", '75%');
 
       // initialize input widgets first
-    $('#id_start_time').timepicker({
+    jQuery('#id_start_time').timepicker({
         'showDuration': true,
         'timeFormat': 'H:i'
     });
 
-    $('#id_end_time').timepicker({
+    jQuery('#id_end_time').timepicker({
         'showDuration': true,
         'timeFormat': 'H:i'
     });
 
-    $('#id_signup_end_time').timepicker({
+    jQuery('#id_signup_end_time').timepicker({
         'showDuration': true,
         'timeFormat': 'H:i'
     });
 
-    $('#id_start_date').datepicker({
+    jQuery('#id_start_date').datepicker({
         'format': 'd-m-yyyy',
         'autoclose': true,
         'weekStart': 1
     });
 
-    $('#id_end_date').datepicker({
+    jQuery('#id_end_date').datepicker({
         'format': 'd-m-yyyy',
         'autoclose': true,
         'weekStart': 1
     });
 
-      $('#id_signup_end_date').datepicker({
+    jQuery('#id_signup_end_date').datepicker({
         'format': 'd-m-yyyy',
         'autoclose': true,
         'weekStart': 1
