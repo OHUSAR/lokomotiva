@@ -1,114 +1,119 @@
 {% extends 'lokoadmin/user_profiles/user_base.html' %}
+{% load admin_static %}
 
 {% block body_content %}
-  <div class="widget">
-    <div class="widget-header">
-      <i class="icon-user"></i>
-      <h3>Profil {{ current_user.username }}</h3>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:delete_user' current_user.pk %}">
-          <i class="icon-trash"></i>
-        </a>
-      </div>
-      <div class="col-2 pull-right" style="margin-right: 2%;">
-        <a href="{% url 'lokoadmin:edit_user' current_user.pk %}">
-          <i class="icon-pencil"></i>
-        </a>
-      </div>
-    </div>
-
-    <div class="widget-content">
-      <div class="tabbable">
-        <ul class="nav nav-tabs">
-          <li class="active">
-            <a href="#profile" data-toggle="tab">Profil</a>
-          </li>
-          <li><a href="#stats" data-toggle="tab">Aktivita</a></li>
-        </ul>
-        <br>
-        <div class="tab-content">
-
-          <div class="tab-pane active" id="profile">
-            <div class="span5">
-              <div class="widget">
-                <div class="widget-header">
-                  <h3>Meno</h3>
-                </div>
-                <div class="widget-content">
-                  {{ current_user.first_name }} <strong>{{ current_user.last_name }}</strong>
-                </div>
-              </div>
+    <div class="widget">
+        <div class="widget-header">
+            <i class="icon-user"></i>
+            <h3>Profil {{ current_user.username }}</h3>
+            <div class="col-2 pull-right" style="margin-right: 2%;">
+                <a href="{% url 'lokoadmin:delete_user' current_user.pk %}">
+                    <i class="icon-trash"></i>
+                </a>
             </div>
-            <div class="span5">
-              <div class="widget">
-                <div class="widget-header">
-                  <h3>Email</h3>
-                </div>
-                <div class="widget-content">
-                  <a href="mailto:{{ current_user.email }}" target="_top">{{ current_user.email }}</a>
-                </div>
-              </div>
+            <div class="col-2 pull-right" style="margin-right: 2%;">
+                <a href="{% url 'lokoadmin:edit_user' current_user.pk %}">
+                    <i class="icon-pencil"></i>
+                </a>
             </div>
-            {% if form %}
-              <div class="span10" style="margin-bottom: 20%;">
-                <h3>Extra údaje</h3>
-                {% include 'lokoadmin/form.html' %}
-              </div>
-            {% endif %}
-          </div>
-          <div class="tab-pane" id="stats">
-            <div class="span10">
-              <div class="widget">
-                <div class="widget-header">
-                  <h3>Udalosti, na ktoré je prihlásený</h3>
-                </div>
-                <div class="widget-content">
-                  {% for event in user_events %}
-                    <div class="span4">
-                      <a href="{% url "lokoadmin:event_detail" event.pk %}">
-                        {{ event.name }} v <strong>{{ event.location }}</strong>
-                      </a>
-                    </div>
-                    <div class="span4">
-                      {{ event.start_date }} - {{ event.start_time }}
-                    </div>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <div class="widget-content">
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#profile" data-toggle="tab">Profil</a>
+                    </li>
+                    <li><a href="#stats" data-toggle="tab">Aktivita</a></li>
+                </ul>
+                <br>
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="profile">
+                        <div class="span5">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h3>Meno</h3>
+                                </div>
+                                <div class="widget-content">
+                                    {{ current_user.first_name }} <strong>{{ current_user.last_name }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span5">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h3>Email</h3>
+                                </div>
+                                <div class="widget-content">
+                                    <a href="mailto:{{ current_user.email }}" target="_top">{{ current_user.email }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if form %}
+                            <div class="span10" style="margin-bottom: 20%;">
+                                <h3>Extra údaje</h3>
+                                {% include 'lokoadmin/form.html' %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="stats">
+                        <div class="span10">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h3>Udalosti, na ktoré je prihlásený</h3>
+                                </div>
+                                <div class="widget-content">
+                                    {% for event in user_events %}
+                                        <div class="span4">
+                                            <a href="{% url "lokoadmin:event_detail" event.pk %}">
+                                                {{ event.name }} v <strong>{{ event.location }}</strong>
+                                            </a>
+                                        </div>
+                                        <div class="span4">
+                                            {{ event.start_date }} - {{ event.start_time }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 {% endblock %}
 
 {% load staticfiles %}
 
 {% block custom_css %}
-  <link rel="stylesheet" href="{% static "lokoadmin/css/jquery.datetimepicker.min.css" %}">
-  <link rel="stylesheet" href="{% static "lokoadmin/css/multiple-select.css" %}">
+    <link rel="stylesheet" href="{% static "lokoadmin/css/pikaday.css" %}">
 {% endblock %}
 
 {% block custom_js %}
-  {% include 'lokoadmin/datepicker_js.html' %}
-  <script src="{% static 'lokoadmin/js/multiple-select.js' %}"></script>
-  <script>
-    $('#id_children').multipleSelect({
-            filter: true,
+    <script type="text/javascript" src="{% static 'lokoadmin/js/moment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lokoadmin/js/pikaday.js' %}"></script>
+    <script type="text/javascript">
+        var timepicker1 = new Pikaday({
+            field: document.getElementById('id_birthday'),
+            firstDay: 1,
+            minDate: new Date(2016, 0, 1),
+            maxDate: new Date(2100, 12, 31),
+            yearRange: [2016, 2100],
+            showTime: false,
+            autoClose: true,
+            format: 'DD-M-YYYY'
         });
 
-    $(function() {
-
-      $('#id_birthday').datepicker({
-          'format': 'dd-mm-yyyy',
-          'autoclose': true
-      });
-
-      $( "#id_member_since" ).datepicker({
-          'format': 'dd-mm-yyyy',
-          'autoclose': true
-      });
-    });
-  </script>
+        var timepicker2 = new Pikaday({
+            field: document.getElementById('id_member_since'),
+            firstDay: 1,
+            minDate: new Date(2016, 0, 1),
+            maxDate: new Date(2100, 12, 31),
+            yearRange: [2016, 2100],
+            showTime: false,
+            autoClose: true,
+            format: 'DD-M-YYYY'
+        });
+    </script>
 {% endblock %}
