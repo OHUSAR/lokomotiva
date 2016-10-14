@@ -72,7 +72,7 @@
                 <div class="w3-container w3-padding">
                     <form method="post" action="" class="w3-form">
                         {% csrf_token %}
-                        <div class="w3-select">
+                        <div>
                             <select name="type">
                                 <option value="all">Všetky</option>
                                 {% for t in all_types %}
