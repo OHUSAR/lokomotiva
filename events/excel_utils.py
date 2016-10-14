@@ -61,7 +61,7 @@ def export_child_attendace(start_date, end_date, type):
     children = [user_profile.user for user_profile in UserType.objects.filter(user_type=1)]
     events = get_events(start_date, end_date, type)
 
-    worksheet_s = workbook.add_worksheet('{}-{}.xls'.format(start_date, end_date))
+    worksheet_s = workbook.add_worksheet('{}-{}'.format(start_date, end_date))
     title = workbook.add_format({
         'bold': True,
         'font_size': 14,

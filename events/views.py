@@ -366,7 +366,7 @@ def child_attendance(request):
 
             response = HttpResponse(content_type='application/vnd.ms-excel')
             response['Content-Disposition'] = 'attachment; filename={}: {}-{}.xlsx'.format(
-                'Dochádzka', start_date, end_date,
+                'Dochadzka', start_date, end_date,
             )
             xlsx_data = export_child_attendace(start_date, end_date, type)
             response.write(xlsx_data)
