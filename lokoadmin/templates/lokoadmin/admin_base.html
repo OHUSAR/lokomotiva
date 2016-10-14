@@ -2,55 +2,61 @@
 
 
 {% block content %}
-  <body>
+    <body>
     {% include 'lokoadmin/navigation.html' %}
     <div class="subnavbar">
-      <div class="subnavbar-inner">
-        <div class="container">
-          <ul class="mainnav">
-            <li class={% block dashboard_active %}""{% endblock %}>
-              <a href="{% url 'lokoadmin:dashboard' %}">
-                <i class="icon-dashboard"></i>
-                <span>Úvod</span>
-              </a>
-            </li>
-            <li class={% block users_active %}""{% endblock %}>
-              <a href="{% url "lokoadmin:users" %}">
-                <i class="icon-group"></i>
-                <span>Užívatelia</span>
-              </a>
-            </li>
-            <li class={% block events_active %}""{% endblock %}>
-              <a href="{% url "lokoadmin:events" %}">
-                <i class="icon-list-alt"></i>
-                <span>Udalosti</span>
-              </a>
-            </li>
-            {% block no_actions %}
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i style="color: black;" class="icon-long-arrow-down"></i>
-                  <span style="color: black;">Akcie</span>
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  {% block custom_actions %}
-                  {% endblock %}
+        <div class="subnavbar-inner">
+            <div class="container">
+                <ul class="mainnav">
+                    <li class={% block dashboard_active %}""{% endblock %}>
+                        <a href="{% url 'lokoadmin:dashboard' %}">
+                            <i class="icon-dashboard"></i>
+                            <span>Úvod</span>
+                        </a>
+                    </li>
+                    <li class={% block users_active %}""{% endblock %}>
+                        <a href="{% url "lokoadmin:users" %}">
+                            <i class="icon-group"></i>
+                            <span>Užívatelia</span>
+                        </a>
+                    </li>
+                    <li class={% block child_attendance_active %}""{% endblock %}>
+                        <a href="{% url "lokoadmin:child_attendance" %}">
+                            <i class="icon-time"></i>
+                            <span>Dochádzka detí</span>
+                        </a>
+                    </li>
+                    <li class={% block events_active %}""{% endblock %}>
+                        <a href="{% url "lokoadmin:events" %}">
+                            <i class="icon-list-alt"></i>
+                            <span>Udalosti</span>
+                        </a>
+                    </li>
+                    {% block no_actions %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i style="color: black;" class="icon-long-arrow-down"></i>
+                                <span style="color: black;">Akcie</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% block custom_actions %}
+                                {% endblock %}
+                            </ul>
+                        </li>
+                    {% endblock %}
                 </ul>
-              </li>
-            {% endblock %}
-          </ul>
+            </div>
         </div>
-      </div>
     </div>
     <div class="main">
-      <div class="main-inner">
-        <div class="container">
-          {% block body_content %}
-          {% endblock %}
+        <div class="main-inner">
+            <div class="container">
+                {% block body_content %}
+                {% endblock %}
+            </div>
         </div>
-      </div>
     </div>
 
-  </body>
+    </body>
 {% endblock %}

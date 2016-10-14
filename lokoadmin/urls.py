@@ -16,6 +16,10 @@ user_profile_urls = [
     url(r'^users/profile/(.+)/$', user_profile, name='user_profile'),
 ]
 
+attendance_urls = [
+    url(r'^events/child_attendance/$', child_attendance, name='child_attendance'),
+]
+
 event_urls = [
     url(r'^events/$', events, name='events'),
     url(r'^events/older/(.+)/(.*)/$', events, name='events'),
@@ -74,4 +78,4 @@ event_type_urls = [
     url(r'events/types/(?P<pk>[0-9]+)/delete/$', EventTypeDelete.as_view(), name='event_type_delete'),
 ]
 
-urlpatterns = dashboard_urls + user_profile_urls + event_urls + event_type_urls
+urlpatterns = dashboard_urls + user_profile_urls + event_urls + event_type_urls + attendance_urls

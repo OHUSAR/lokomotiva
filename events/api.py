@@ -5,8 +5,8 @@ from datetime import date, timedelta
 
 def get_events(start_date, end_date, type='all'):
     if type == 'all':
-        return Event.objects.filter(start_date__range=[start_date, end_date])
-    return Event.objects.filter(start_date__range=[start_date, end_date], type__name=type)
+        return Event.objects.filter(end_date__range=[start_date, end_date])
+    return Event.objects.filter(end_date__range=[start_date, end_date], type__name=type)
 
 
 def get_month_interval(number):

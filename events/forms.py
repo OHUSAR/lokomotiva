@@ -1,7 +1,9 @@
+from django.forms import Form
 from django.utils.translation import ugettext_lazy as _
 from events.models import *
 from django.forms.models import *
-
+from django import forms
+import datetime
 
 REQUIRED = _("Toto je povinná položka.")
 UNIQUE = _("Takýto záznam už existuje.")
@@ -155,3 +157,16 @@ class PaymentForm(ModelForm):
                 'required': REQUIRED,
             },
         }
+
+
+"""
+-----------------
+DOCHADZKA
+-----------------
+"""
+
+
+class ChildAttendanceForm(Form):
+    start_date = forms.DateField(initial=datetime.date.today)
+    end_date = forms.DateField(initial=datetime.date.today)
+    type = ModelChoiceField(queryset=EventType.objects.all())

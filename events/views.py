@@ -5,8 +5,9 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from events.excel_utils import write_to_excel
-from events.forms import EventTypeForm, EventForm, AccomodationForm, PaymentForm
+from events.excel_utils import write_to_excel, export_child_attendace
+from events.forms import EventTypeForm, EventForm, AccomodationForm, PaymentForm, \
+    ChildAttendanceForm
 from events.api import *
 
 
@@ -344,3 +345,32 @@ class EventTypeDelete(DeleteView):
     model = EventType
     success_url = reverse_lazy('lokoadmin:event_types')
     template_name = 'lokoadmin/events/type_delete.html'
+
+
+"""
+-----------------
+DOCHADZKA
+-----------------
+"""
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required
+def child_attendance(request):
+    if request.method == 'POST':
+        form = ChildAttendanceForm(request.POST)
+        if form.is_valid():
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            type = form.cleaned_data['type']
+
+            response = HttpResponse(content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename={}: {}-{}.xlsx'.format(
+                'Dochádzka', start_date, end_date,
+            )
+            xlsx_data = export_child_attendace(start_date, end_date, type)
+            response.write(xlsx_data)
+            return response
+    else:
+        form = ChildAttendanceForm()
+    return render(request, 'lokoadmin/events/child_attendance.html', {'form': form})
