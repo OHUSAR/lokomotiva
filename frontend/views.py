@@ -98,7 +98,7 @@ def event_accomodations(request, pk):
     msg = ""; color = "green"
 
     if request.method == 'POST':
-        if signin_is_on:
+        if not signin_is_on:
             if 'sign_in' in request.POST or 'sign_out' in request.POST:
                 user = User.objects.get(pk=int(request.POST['pk']))
                 user_attending = is_attending(user, event)
@@ -128,10 +128,11 @@ def event_accomodations(request, pk):
                         change_attending(user, event)
                         msg = "Užívatel <b>{}</b> bol úspešne odhlásený.".format(user.username)
             else:
-                accomodation_pk = int([key for key in request.POST
-                                       if key != 'csrfmiddlewaretoken' and key != 'users'][0])
+                acc_name = [key for key in request.POST if key.startswith('send-id')][0]
+                accomodation_pk = int(acc_name.split('_')[1])
                 acc = Accomodation.objects.get(pk=accomodation_pk)
-                user_pks = set(int(pk) for pk in request.POST.getlist('users', set()))
+                user_pks = set(int(pk) for pk in request.POST if
+                               'csrfmiddlewaretoken' != pk and not pk.startswith('send-id'))
                 my_users_pks = set(user.pk for user in get_users(request.user))
                 print(acc, user_pks, my_users_pks)
                 edit_group_accomodated(acc, user_pks, my_users_pks)

@@ -16,15 +16,24 @@
         </div>
         <form method="post" class="form" action="#actions_content">
             {% csrf_token %}
-            <select name="users" multiple class="form-control">
-                {% for user in my_users %}
-                    <option {{ accomodation|check:user }}
-                            name="{{ user.pk }}" value="{{ user.pk }}" id="{{ user.pk }}">
+            {% for user in my_users %}
+                <div class="col-lg-12">
+                    <label
+                            for="id_children_41"
+                            style="
+                                text-align: right;
+                                clear: both;
+                                float:left;
+                                margin-right:15px;
+                                "
+                    >
                         {{ user.username }}
-                    </option>
-                {% endfor %}
-            </select>
-            <button class="btn btn-primary" name="{{ accomodation.pk }}" type="submit">Zmeň pre {{ accomodation.location }}</button>
+                    </label>
+                    <input id="{{ user.pk }}"  name="{{ user.pk }}" type="checkbox"
+                           value="{{ user.pk }}" {{ accomodation|check:user }} class="checkbox"/>
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary" value="send-id_{{ accomodation.pk }}" name="send-id_{{ accomodation.pk }}" type="submit">Zmeň pre {{ accomodation.location }}</button>
         </form>
         <hr>
     {% endfor %}

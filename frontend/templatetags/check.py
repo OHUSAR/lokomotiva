@@ -6,4 +6,4 @@ register = template.Library()
 
 @register.filter
 def check(accomodation, user):
-    return "selected" if is_accomodated(user, accomodation) else ""
+    return "checked" if is_accomodated(user, accomodation) else ""

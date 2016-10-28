@@ -30,14 +30,19 @@ class Command(BaseCommand):
                 line = line.split()
                 name, surname, email, children = line[0], line[1], line[2], line[3:]
                 username = email.split('@')[0]
-                password = str(uuid.uuid4()).upper()[0:8]
                 u = User.objects.create(
                     first_name=name,
                     last_name=surname,
                     username=username,
-                    password=password,
                     email=email,
                 )
+
+                password = str(uuid.uuid4()).upper()[0:8]
+                if username == 'kostolna':
+                    print(password)
+                u.set_password(password)
+                u.save()
+
                 UserType.objects.create(
                     user=u,
                     user_type=2,
@@ -51,15 +56,15 @@ class Command(BaseCommand):
 
                     year = child_info[2]
                     if ChildProfile.objects.filter(user__username=username).exists():
-                        print(username, 'doesnt exist')
                         ch = ChildProfile.objects.get(user__username=username)
                     else:
                         child = User.objects.create(
                             first_name=first_name,
                             last_name=last_name,
                             username=username,
-                            password=password,
                         )
+                        child.set_password(password)
+                        child.save()
                         ch = ChildProfile.objects.create(
                             user=child,
                             birthday='{}-01-01'.format(year),

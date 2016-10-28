@@ -1,5 +1,5 @@
 from user_profiles.models import *
-from django.forms import ModelForm, PasswordInput, DateInput
+from django.forms import ModelForm, PasswordInput, DateInput, CheckboxSelectMultiple
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -94,3 +94,7 @@ class ParentChildrenForm(ModelForm):
     class Meta:
         model = ParentChildren
         exclude = ('user', )
+
+        widgets = {
+            'children': CheckboxSelectMultiple,
+        }
