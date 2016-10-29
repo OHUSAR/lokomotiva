@@ -110,12 +110,48 @@
             </a>
         </div>
     {% endfor %}
-    <!-- End Middle Column -->
 {% endblock %}
 
 {% block right_content %}
     <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
         <h5>Moje nedoplatky</h5>
+        <hr>
+        <div class="w3-container w3-center">
+            <div class="panel panel-danger">
+                <b>Už po termíne</b><br><br>
+                <p>
+                    {% for key, value in unpaid_high.items %}
+                        <b>Za používateľa: {{ key }}</b> <br>
+                        {% for payment in value %}
+                            {{ payment }}
+                            <br>
+                        {% endfor %}
+                    {% endfor %}
+                    {% if not unpaid_high %}
+                        Nemáte žiadne nedoplatky po termíne
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div class="w3-container w3-center">
+            <div class="w3-responsive">
+                <b>Ešte pred termínom</b><br><br>
+                <p>
+                    {% for key, value in unpaid_low.items %}
+                        <b>Za používateľa: {{ key }}</b> <br>
+                        {% for payment in value %}
+                            {{ payment }}
+                            <br>
+                        {% endfor %}
+                    {% endfor %}
+                    {% if not unpaid_low %}
+                        Nemáte žiadne nedoplatky po termíne
+                    {% endif %}
+                </p>
+            </div>
+        </div>
     </div>
     <br>
 {% endblock %}

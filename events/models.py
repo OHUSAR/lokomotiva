@@ -53,11 +53,24 @@ class Accomodation(Model):
         unique_together = ('event', 'location', 'start_date', 'end_date', 'price_per_night')
 
 
+class AttendingEvent(Model):
+    user = ForeignKey(User, on_delete=CASCADE, related_name='events')
+    event = ForeignKey(Event, on_delete=CASCADE, related_name='attending')
+
+    class Meta:
+        unique_together = ('user', 'event')
+
+
 class Payment(Model):
     event = ForeignKey(Event, on_delete=CASCADE, null=True, blank=True)
     name = CharField(max_length=100)
     price = DecimalField(max_digits=10, decimal_places=2)
     due_date = DateField()
+
+    def __str__(self):
+        return 'Poplatok: {}, za udalosť: {}, cena: {} EUR'.format(
+            self.name, self.event.name, self.price
+        )
 
 
 class Paid(Model):
@@ -74,11 +87,3 @@ class Accomodated(Model):
 
     class Meta:
         unique_together = ('user', 'accomodation')
-
-
-class AttendingEvent(Model):
-    user = ForeignKey(User, on_delete=CASCADE, related_name='events')
-    event = ForeignKey(Event, on_delete=CASCADE, related_name='attending')
-
-    class Meta:
-        unique_together = ('user', 'event')

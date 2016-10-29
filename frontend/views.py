@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from events.api import *
 from django.utils import timezone
+from frontend.api import get_unpaid_payments
 
 
 @login_required
@@ -14,6 +15,22 @@ def dashboard(request, wanted=0, type='all'):
     desired_events = get_events(start_date, end_date, type)
     interval = get_string_interval(start_date, end_date)
 
+    unpaid_low, unpaid_high = dict(), dict()
+    unpaid = get_unpaid_payments(request.user)
+    for user_payment in unpaid:
+        user, payment = user_payment
+        if payment.due_date < timezone.now().date():
+            unpaid_high[user.username] = unpaid_high.get(user.username, [])
+            unpaid_high[user.username].append(payment)
+        else:
+            unpaid_low[user.username] = unpaid_low.get(user.username, [])
+            unpaid_low[user.username].append(payment)
+
+    print(unpaid_low)
+    test = {
+        'a': [1, 2, 3],
+        'b': [1, 2, 4],
+    }
     context = {
         'events': desired_events,
         'older_link': wanted - 1,
@@ -21,6 +38,9 @@ def dashboard(request, wanted=0, type='all'):
         'interval': interval,
         'type': type,
         'all_types': EventType.objects.all(),
+        'unpaid_low': unpaid_low,
+        'unpaid_high': unpaid_high,
+        'test': test,
     }
     return render(request, 'frontend/dashboard.html', context)
 

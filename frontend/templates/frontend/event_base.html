@@ -62,9 +62,6 @@
                     <li class={% block accomodation_active %}{% endblock %}>
                         <a href="{% url 'frontend:event_accomodations' event.pk %}">Ubytovanie</a>
                     </li>
-                    <li class={% block payments_active %}{% endblock %}>
-                        <a href="#">Platby</a>
-                    </li>
                 </ul>
                 {% block actions_content %}
                 {% endblock %}

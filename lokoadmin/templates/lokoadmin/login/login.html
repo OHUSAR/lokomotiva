@@ -8,7 +8,7 @@
 {% block content %}
   <div class="account-container">
     <div class="content clearfix">
-      <form action="#" method="post">
+      <form method="post">
         {% csrf_token %}
         {% if user.is_authenticated and 'next' in request.GET %}
           <div class="alert alert-danger fade in">
